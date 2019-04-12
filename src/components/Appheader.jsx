@@ -53,7 +53,7 @@ class Appheader extends Component {
                         <div className={style.row}>
 
                             <div>
-                                <img className="imageOnheader" src={require('../assets/Group 2868.png')} />
+                                <img className="imageOnheader" src={require('../assets/ic_archive_24px.png')} />
                             </div>
                             <div>
                                 <img className="imageOnheader" src={require("../assets/ic_notifications_24px.png")} />

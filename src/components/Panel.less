@@ -1,35 +1,47 @@
+@import  '../main.less';
+
+
 .cardExtend{
     background-color:#b3c1c9;
-    height: 0.5em;
-    width: 3em;
+    height: 3px;
+    width: 26px;
     border-radius: 5px;
 
 }
 .cardPanel{
 
-    height: 15em;
-    width:20em;
+    height: 230px;
+    width: 330px;;
      background-color:white;
      overflow:auto;
+     position: relative;
+     margin-left: 30px;
+     margin-top: 1em;
+  
 }
 .cardextendDiv{
     display :flex;
     flex-direction: row;
     justify-content: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 6px;
 }
 .titleDiv{
     color:#001A33;
-    font-size:1em;
+    font-size:  15px;
     font-weight: bold;
  position: relative;
  margin-top: 8px;
+ margin-left: 5px;
 }
 .copyiconDiv{
     background-color:#F78809;
     height: 2em;
     width: 2em;
     border-radius: 50%;
-    padding: 4px 0px 0px 10px;
+    padding: 2px 0px 0px 8px;
      margin: 5px
 }
 .openlinkDiv{
@@ -37,7 +49,7 @@
     height: 2em;
     width: 2em;
     border-radius: 50%;
-    padding: 4px 0px 0px 10px;
+    padding: 1px 0px 0px 8px;
      margin: 5px
 }
 .editiconDiv{
@@ -45,7 +57,7 @@
     height: 2em;
     width: 2em;
     border-radius: 50%;
-    padding: 4px 0px 0px 10px;
+    padding: 2px 0px 0px 2px;
      margin: 5px
 }
 .shareiconDiv{
@@ -53,11 +65,43 @@
     height: 2em;
     width: 2em;
     border-radius: 50%;
-    padding: 4px 0px 0px 10px;
+    padding: 2px 0px 0px 8px;
     margin: 5px
 }
 .paneliconDiv{
     display: flex;
     flex-direction: row;  
     position:absolute;
-    margin-left :1
+    margin-left :153px;
+    margin-top: 15px
+}
+.iconDiv{
+    display: flex;
+    align-items: flex-end;  
+}
+.toogleRedirect{
+position: absolute;
+top:0;
+right: 0;
+}
+.hashtagDiv{
+    font-size: 12px;
+    color: #0073B1;
+    margin-left: 5px;
+}
+.redirectDiv{
+  padding: 20px 80px 0px 80px;
+ 
+}
+.redirectHeader{
+  padding-bottom: 20px;
+      color: #001A33;
+    font-size: 18px;
+}
+.dialogButton{
+  padding-left: 79px;
+  padding-bottom: 11.36px
+}
+#updateButton{
+  background-Color:@yellow; color: white; width: 82px; height: 40px ;padding-bottom: -10px
+}

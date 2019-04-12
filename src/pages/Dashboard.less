@@ -10,8 +10,15 @@
     background-color: #F7F7F7;
     padding: 1em;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  
 
+}
+.toggleDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
 }
 .addButton{
     display: flex;
@@ -21,4 +28,36 @@
     bottom: 0;
     position: fixed
 }
+.toogleButton{
+    background-color: white;
+    width: 283px;
+    height: 36px;
+    border-radius: 10px;
+}
 
+#articleButton{
+    width:141px;
+    background-color: @yellow;
+    color: white;
+      border-radius: 10px;
+
+}
+#storyButton{
+    width:141px;
+}
+
+#clikedToggle{
+      width:141px;
+    background-color: @yellow;
+    color: white;
+    border-radius: 10px;
+
+}
+.displayCards{
+    margin-top: 20px;
+    margin-left: 100px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+}

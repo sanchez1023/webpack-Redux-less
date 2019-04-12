@@ -1,0 +1,1 @@
+export const TOGGLE_REDIRECT = 'TOGGLE_REDIRECT';
