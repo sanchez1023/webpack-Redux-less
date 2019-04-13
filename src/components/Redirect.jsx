@@ -15,6 +15,7 @@ class Redirectcard extends Component {
 
 
     closeDailog() {
+        console.log("in close dialog")
         this.props.close();
     }
 

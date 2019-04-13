@@ -5,6 +5,7 @@ import style from "./Dashboard.less"
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
 import Storypanel from "../components/Storypanel";
+import Addredirectcard from "../components/Addredirect";
 
 
 class Dashboard extends Component {
@@ -14,6 +15,7 @@ class Dashboard extends Component {
             openAddredirect: false,
         }
         this.addRedirect = this.addRedirect.bind(this)
+        this.closeRedirect = this.closeRedirect.bind(this)
     }
 
     addRedirect() {
@@ -22,6 +24,11 @@ class Dashboard extends Component {
         })
         console.log("in open redirect");
 
+    }
+    closeRedirect() {
+        this.setState({
+            openAddredirect: false,
+        })
     }
     render() {
         return (
@@ -45,8 +52,12 @@ class Dashboard extends Component {
                     <div className={style.addButton}>
                         <img onClick={() => this.addRedirect()} src={require('../assets/add.png')} />
                     </div>
+                    <Addredirectcard
+                        open={this.state.openAddredirect}
+                        close={this.closeRedirect}
+                    />
                 </div>
-                <Addredirectcard open={this.state.openAddredirect} />
+
             </Container>
         )
     }
