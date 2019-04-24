@@ -3,11 +3,62 @@ import React, { Component } from 'react';
 import { Dialog, InputBase, IconButton, Toolbar, Chip, Button, TextField } from '@material-ui/core';
 import style from './Addredirect.less'
 import { Card } from 'antd';
-import Col from 'react-bootstrap/Col'
+import Col from 'react-bootstrap/Col';
+import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { Input } from 'antd';
+import { INPUT_DESCRIPTION } from '../constants/actionTypes';
+import { connect } from 'react-redux';
+
+const { TextArea } = Input;
+const theme = createMuiTheme({
+    overrides: {
+
+        MuiDialog: {
+
+            paperWidthSm: {
+                maxWidth: '700px !Important'
+            },
+            paperScrollPaper: {
+                maxHeight: '425px !Important'
+            },
+            paper: {
+                overflow: 'visible !Important '
+            }
+
+        }
+    }
+})
+const avatarTheme = createMuiTheme({
+    overrides: {
+        MuiChip: {
+
+            avatar: {
+                width: '18px',
+                color: ' #616161',
+                height: '37px',
+                marginLeft: '9px'
+            }
+
+        }
+    }
+
+});
+const mapStateToProps = state => ({ ...state.addRedirect });
+const mapDispatchToProps = dispatch => ({
+    addDescription: value =>
+        dispatch({ type: INPUT_DESCRIPTION, key: 'description', value }),
+    // onChangePassword: value =>
+    //     dispatch({ type: INPUT_PASSWORD, key: 'password', value }),
+    // onSubmit: (email, password) =>
+    //     dispatch({ type: LOGIN_USER, payload: login(email, password) }),
+    // onUnload: () =>
+    //     dispatch({ type: LOGIN_PAGE_UNLOADED })
+});
 
 class Addredirectcard extends Component {
     constructor(props) {
         super(props);
+        this.addDescription = event => this.props.addDescription(event.target.value)
         this.state = {
 
         }
@@ -22,7 +73,12 @@ class Addredirectcard extends Component {
     changeDialog() {
         this.props.change();
     }
-
+    addHashtag() {
+        const description = this.props.description;
+        console.log("descripyon in add" + description)
+        var descriptionValue = description + "#"
+        this.props.addDescription(descriptionValue);
+    }
 
 
 
@@ -31,8 +87,10 @@ class Addredirectcard extends Component {
 
 
     render() {
+        const description = this.props.description
         return (
-            <div>
+
+            <MuiThemeProvider theme={theme}>
                 <Dialog open={this.props.open}>
 
                     <div className={style.mainAddredirectdiv}>
@@ -42,7 +100,13 @@ class Addredirectcard extends Component {
                             </div>
                         </div>
                         <div className={style.descriptionDiv}>
-                            What do you want to talk about ?
+                            <TextArea id={style.textarea}
+                                onChange={this.addDescription}
+                                value={description}
+                                placeHolder="What you want to say about ?"
+                            >
+                            </TextArea>
+
                         </div>
 
                         <div className={style.bottomDiv}>
@@ -66,13 +130,13 @@ class Addredirectcard extends Component {
                                     <img className={style.bottomImage} src={require("../assets/photo-camera.svg")} />
                                     <img className={style.bottomImage} src={require("../assets/video-camera.svg")} />
                                     <img className={style.bottomImage} src={require("../assets/file.svg")} />
-
-                                    <Chip label="Add Hashtag"
-                                        avatar={<img className={style.addImage}src={require('../assets/add.svg')} />}
-                                    >
-                                        Add Hashtag
+                                    <MuiThemeProvider theme={avatarTheme}>
+                                        <Chip label="Add Hashtag" onClick={() => this.addHashtag()}
+                                            avatar={<img className={style.addImage} src={require('../assets/add.svg')} />}
+                                        >
+                                            Add Hashtag
                                              </Chip>
-
+                                    </MuiThemeProvider>
 
                                 </div>
 
@@ -88,9 +152,9 @@ class Addredirectcard extends Component {
                         </div>
                     </div>
                 </Dialog>
-            </div>
+            </MuiThemeProvider>
 
         );
     }
 }
-export default Addredirectcard;
+export default connect(mapStateToProps, mapDispatchToProps)(Addredirectcard);           

@@ -35,10 +35,7 @@ class Storypanel extends Component {
                     India is facing a massive skill gap problem with hundreds of engineers..
                 </div>
 
-                <div className={style.cardextendDiv}>
-                    <div className={style.cardExtend}>
-                    </div>
-                </div>
+
             </Card>
 
         )

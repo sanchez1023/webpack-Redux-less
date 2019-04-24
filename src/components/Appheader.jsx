@@ -5,13 +5,7 @@ import { Input, Select, Icon } from 'antd';
 import Col from 'react-bootstrap/Col';
 import style from "./login.less";
 import { Avatar, FormHelperText, InputBase, IconButton } from "@material-ui/core";
-const Option = Select.Option;
-const selectBefore = (
-    <Select defaultValue="Http://" style={{ width: 90 }}>
-        <Option value="Http://">Http://</Option>
-        <Option value="Https://">Https://</Option>
-    </Select>
-);
+
 
 class Appheader extends Component {
     render() {
@@ -21,7 +15,7 @@ class Appheader extends Component {
                 <Row>
                     <Col xs={2} className={style.firstColumn}>
                         <div>
-                            <img style={{ padding: 10 }} src={require('../assets/Group 441.png')} />
+                            <img className={style.mainLogo} src={require('../assets/Group 441.png')} />
                         </div>
                     </Col>
                     <Col xs={7}>
@@ -32,7 +26,7 @@ class Appheader extends Component {
                                     id='searchButton'
                                     color='white'
                                 >
-                                    <img style={{ height: 20, width: 20 }} src={require("../assets/magnifying-glass-icon.png")}
+                                    <img className={style.searchLogo} src={require("../assets/magnifying-glass-icon.png")}
                                         alt="" />
                                 </IconButton>
 

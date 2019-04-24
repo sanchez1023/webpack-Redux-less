@@ -2,6 +2,9 @@
 import React, { Component } from 'react';
 import { Dialog, InputBase, IconButton, Toolbar, Chip, Button, TextField } from '@material-ui/core';
 import style from './Panel.less'
+import store from '../store';
+import { TOGGLE_REDIRECT, CHANGE_TOGGLE, CLOSE_TOGGLE_REDIRECT_DAILOG } from '../constants/actionTypes';
+import { connect } from 'react-redux';
 
 
 class Redirectcard extends Component {
@@ -16,11 +19,18 @@ class Redirectcard extends Component {
 
     closeDailog() {
         console.log("in close dialog")
-        this.props.close();
+        store.dispatch({ type: CLOSE_TOGGLE_REDIRECT_DAILOG })
     }
 
     changeDialog() {
-        this.props.change();
+        if (!this.props.toggle.age) {
+            store.dispatch({ type: TOGGLE_REDIRECT })
+        }
+        else {
+            store.dispatch({ type: CHANGE_TOGGLE })
+        }
+        this.props.close();
+
     }
 
 
@@ -64,4 +74,11 @@ class Redirectcard extends Component {
         );
     }
 }
-export default Redirectcard
+function mapStateToProps(state) {
+    // console.log("state in in redirect--" + state.toggleRedirect.state.Toggle.age)
+    return {
+        toggle: state.toggleRedirect.state.Toggle,
+        newState: state.toggleRedirect.state.Toggle
+    }
+}
+export default connect(mapStateToProps)(Redirectcard);

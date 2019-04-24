@@ -1,5 +1,5 @@
 @import  '../main.less';
-
+@import '~antd/dist/antd.css';
 
 .cardExtend{
     background-color:#b3c1c9;
@@ -13,20 +13,22 @@
     height: 230px;
     width: 330px;;
      background-color:white;
-     overflow:auto;
+     overflow:visible  !important;
      position: relative;
      margin-left: 30px;
      margin-top: 1em;
+  
   
 }
 .cardextendDiv{
     display :flex;
     flex-direction: row;
     justify-content: center;
-    position: absolute;
+    position: relative;
     bottom: 0;
     width: 100%;
     height: 6px;
+    cursor: pointer;
 }
 .titleDiv{
     color:#001A33;
@@ -72,7 +74,7 @@
     display: flex;
     flex-direction: row;  
     position:absolute;
-    margin-left :153px;
+    margin-left :157px;
     margin-top: 15px
 }
 .iconDiv{
@@ -104,4 +106,21 @@ right: 0;
 }
 #updateButton{
   background-Color:@yellow; color: white; width: 82px; height: 40px ;padding-bottom: -10px
+}
+.expansionCard{
+  overflow: visible;
+  
+}
+.nonExpanddiv{
+  padding: 2px;
+}
+.panelDiv{
+
+}
+.descriptionDiv{
+  padding: 4px;
+}
+.editIcon{
+  height: 20px;
+    width: 23px;
 }

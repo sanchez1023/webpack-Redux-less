@@ -8,15 +8,40 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Container from "react-bootstrap/Container";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import classes from 'classes'
+import { INPUT_EMAIL, INPUT_PASSWORD, LOGIN_USER } from "../constants/actionTypes";
+import { connect } from 'react-redux';
+import { compose } from "recompose";
+import login from "../userController";
+import { message } from 'antd';
+import { Spin, Alert } from 'antd';
 
+
+var a = require('../userController');
+
+
+
+const mapStateToProps = state => ({ ...state.loginPage });
+const mapDispatchToProps = dispatch => ({
+    onChangeEmail: value =>
+        dispatch({ type: INPUT_EMAIL, key: 'email', value }),
+    onChangePassword: value =>
+        dispatch({ type: INPUT_PASSWORD, key: 'password', value }),
+    onSubmit: (email, password) =>
+        dispatch({ type: LOGIN_USER, payload: login(email, password) }),
+    // onUnload: () =>
+    //     dispatch({ type: LOGIN_PAGE_UNLOADED })
+});
 
 const theme = createMuiTheme({
     overrides: {
         MuiOutlinedInput: {
             adornedEnd: {
 
-                paddingRight: 0
+                paddingRight: 3
             }
         }
     }
@@ -29,7 +54,7 @@ const styles = textjust => ({
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-        width: 200,
+
     },
 
     // cssFocusedLabel: {
@@ -39,12 +64,18 @@ const styles = textjust => ({
     cssOutlinedInput: {
         '&$cssFocused $notchedOutline': {
             borderColor: '#EFA500 !important',
+            color: '#EFA500 !important',
         }
     },
 
     cssFocused: {
         borderColor: '#EFA500 !important',
         color: '#EFA500 !important'
+
+    },
+    cssFocusedLabel: {
+        color: '#EFA500 !important'
+
 
     },
 
@@ -57,11 +88,15 @@ const styles = textjust => ({
 
 const texttheme = createMuiTheme({
     overrides: {
-        MuiFormLabel: {
+        MuiOutlinedInput: {
             root: {
-                MuiFormLabel: {
+                MuiOutlinedInput: {
                     focused: {
-                        color: '#EFA500'
+                        MuiOutlinedInput: {
+                            notchedOutline: {
+                                borderColor: ' #EFA500 !important',
+                            }
+                        }
                     }
                 }
             }
@@ -78,77 +113,210 @@ class Login extends Component {
 
     constructor() {
         super();
+        this.changeEmail = event => this.validateEmail(event.target.value);
+        this.changePassword = event => this.validatePassword(event.target.value);
+
+        this.onLogin = (email, password) => ev => {
+            ev.preventDefault();
+            console.log("email ------" + email);
+            // message.config({
+            //     top: 100,
+            //     left: 300,
+            //     duration: 6,
+            //     maxCount: 3,
+            // })
+            // message.loading('Proccessing..', 5)
+            //     .then(() => message.success('Loading finished', 2.5))
+            if (this.state.emailError === "" && this.state.passwordError === "") {
+
+                {
+                    this.setState({
+                        loading: true,
+                    })
+                    console.log("loading --" + this.state.loading)
+                    this.props.onSubmit(email, password);
+                    // this.props.history.push('/home');
+                }
+                // this.props.onSubmit(email, password);
+            }
+        }
         this.state = {
-            passwordIsMasked: false
+            passwordIsMasked: false,
+            emailError: "",
+            passwordError: "",
+            loading: true,
+
         }
     }
+    validateEmail(email) {
+        var flag = false;
+
+        if (!email) {
+            this.setState({
+                emailError: "*Required"
+            })
+        }
+        else if (email.length >= 1) {
+            this.setState({
+                emailError: ""
+            })
+
+        }
+        else if (email.length >= 2) {
+            console.log("email---" + email)
+            let lastAtPos = email.lastIndexOf('@');
+            let lastDotPos = email.lastIndexOf('.');
+            if (!(lastAtPos < lastDotPos && lastAtPos > 0 && email.indexOf('@@') === -1 && lastDotPos > 3 && (email.length - lastDotPos) > 3)) {
+                flag = true;
+                this.state.emailError = "Email is badly formated";
+            }
+        }
+
+        this.props.onChangeEmail(email);
+
+
+    }
+    validatePassword(password) {
+        if (password.length < 6) {
+            this.setState({
+                passwordError: "6 characters are required"
+            })
+        }
+        else {
+            this.setState({
+                passwordError: ""
+            })
+
+        }
+        this.props.onChangePassword(password)
+    }
+
     render() {
+        const email = this.props.email
+        const password = this.props.password
+        const classes = this.props;
+        const success = this.props.success 
+        const error = this.props.error
+        console.log('erroe in login ' + error)
+        console.log('succes in login ' + success)
+
         return (
-            <div>
+            <div className={style.loginMaindiv}>
                 <div className={style.loginCard}>
-                    <Card style={{
-                        borderRadius: 120, height: 126,
-                        width: 126, position: 'relative',
-                        marginBottom: -100
-                    }}>
+                    <Card id={style.headerlogoDiv}>
+
+
                         <div className={style.iconDiv}>
                             <img src={require("../assets/Logo.png")} />
                         </div>
                     </Card>
                     <Card className={style.cardComponents}>
 
+                        <Spin spinning={this.state.loading} delay={500}></Spin>
+                        <div style={{ marginTop: 16 }} />
+                        <form onSubmit={this.onLogin(this.props.email, this.props.password)}>
+
+                            <div className={style.textfieldAndbuttondiv}>
+                                <fieldset>
+                                    <MuiThemeProvider theme={texttheme}>
+                                        <div className={style.textfeildDiv}>
+                                            <TextField
+                                                variant="outlined"
+                                                id={style.textField}
+                                                label="Email"
+                                                placeholder=" E-mail"
+                                                value={email}
+                                                onChange={this.changeEmail}
+                                                error={this.state.emailError}
+                                                helperText={this.state.emailError}
+                                                InputLabelProps={{
+                                                    classes: {
+                                                        root: classes.cssFocusedLabel,
+                                                        focused: classes.cssFocused,
+                                                    },
+                                                }}
+                                                InputProps={{
+                                                    classes: {
+                                                        root: classes.cssFocused,
+
+                                                        focused: classes.cssFocused,
+                                                        notchedOutline: classes.notchedOutline,
+                                                    },
+                                                }}
+                                            />
+                                        </div>
+                                    </MuiThemeProvider>
+                                </fieldset>
+                                <fieldset>
+                                    <MuiThemeProvider theme={theme}>
+                                        <div className={style.textfeildDiv}>
+                                            <TextField
+                                                variant="outlined"
+                                                id={style.passwordtextField}
+                                                label="Password"
+                                                placeholder="password"
+                                                value={password}
+                                                onChange={this.changePassword}
+                                                error={this.state.passwordError}
+                                                helperText={this.state.passwordError}
+                                                type={!this.state.passwordIsMasked ? 'password' : 'text'}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <div className={style.maskedIcon} onClick={() => this.setState({ passwordIsMasked: !this.state.passwordIsMasked })}>
+                                                                {this.state.passwordIsMasked ? <Visibility /> : <VisibilityOff />}
+                                                            </div>
+                                                        </InputAdornment>
+                                                    ),
+                                                    classes: {
+                                                        root: classes.cssFocused,
+
+                                                        focused: classes.cssFocused,
+                                                        notchedOutline: classes.notchedOutline,
+                                                    },
+                                                }}
+                                                InputLabelProps={{
+                                                    classes: {
+                                                        root: classes.cssFocusedLabel,
+                                                        focused: classes.cssFocused,
+                                                    },
+                                                }}
 
 
 
+                                            />
 
-                        <div className={style.textfieldAndbuttondiv}>
-                            <div className={style.textfeildDiv}>
-                                <TextField
-                                    variant="outlined"
-                                    id={style.textField}
-                                    label="Email"
-                                    placeholder=" E-mail"
-                                />
-                            </div>
-                            <MuiThemeProvider theme={texttheme}>
-                                <div className={style.textfeildDiv}>
-                                    <TextField
-                                        variant="outlined"
-                                        id={style.textField}
-                                        label="Password"
-                                        placeholder="password"
-                                    // InputProps={{
-                                    //     endAdornment: (
-                                    //         <InputAdornment position="end">
-                                    //             <IconButton aria-label="Toggle password visibility"
-                                    //                 onClick={() => { this.setState({ passwordIsMasked: !this.state.passwordIsMasked }) }} >
-                                    //                 {this.state.passwordIsMasked ? <Visibility /> : <VisibilityOff />}
-                                    //             </IconButton> </InputAdornment>),
-                                    // }}
-                                    />
+                                        </div>
+                                    </MuiThemeProvider>
+                                </fieldset>
+                                <div className={style.forgetpasswordDiv}>
+                                    <div className={style.forgetPassword}>
+                                        <p>Forget Password ?</p>
+                                    </div>
 
                                 </div>
-                            </MuiThemeProvider>
-                            <div className={style.forgetpasswordDiv}>
-                                <div className={style.forgetPassword}>
-                                    <p>Forget Password ?</p>
+                                <div className={style.loginbuttonDiv} >
+                                    <Button type="submit" variant="contained" id={style.loginButton} > Login</Button>
+
                                 </div>
+                            </div>
+
+
+                            <div>
 
                             </div>
-                            <div className={style.loginbuttonDiv} >
-                                <Button variant="contained" id={style.loginButton} > Login</Button>
-
-                            </div>
-                        </div>
-
-
-                        <div>
-
-                        </div>
+                        </form>
                     </Card>
                 </div>
             </div>
         )
     }
 }
-export default Login;
+Login.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, mapDispatchToProps),
+)(Login);
