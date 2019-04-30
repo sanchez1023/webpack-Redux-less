@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import style from "./login.less";
 import Card from '@material-ui/core/Card';
 import { TextField, InputAdornment, IconButton, } from "@material-ui/core";
-import logo from ".././assets/Logo.svg"
+
 import Button from 'react-bootstrap/Button';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -12,17 +12,17 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import classes from 'classes'
-import { INPUT_EMAIL, INPUT_PASSWORD, LOGIN_USER } from "../constants/actionTypes";
+import { INPUT_EMAIL, INPUT_PASSWORD, LOGIN_USER } from "../../constants/actionTypes";
 import { connect } from 'react-redux';
 import { compose } from "recompose";
-import login from "../userController";
+import login from "../../userController";
 import { message } from 'antd';
 import { Spin, Alert } from 'antd';
-import rootSaga from "../reduxSaga/loginSaga";
+import rootSaga from "../../reduxSaga/loginSaga";
 import 'antd/dist/antd.less';
 
 
-var a = require('../userController');
+var a = require('../../userController');
 
 
 
@@ -43,12 +43,24 @@ const theme = createMuiTheme({
         MuiOutlinedInput: {
             adornedEnd: {
 
-                paddingRight: 3
+                paddingRight: 0
             }
-        }
+        },
+        MuiFormLabel: {
+            focused: {
+                color: '#EFA500 !important'
+            }
+        },
+        cssOutlinedInput: {
+            '&$cssFocused $notchedOutline': {
+                borderColor: '#EFA500 !important',
+                color: '#EFA500 !important'
+            }
+        },
     }
 });
-const styles = textjust => ({
+
+const styles = ({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -56,17 +68,17 @@ const styles = textjust => ({
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
-
+        width: 200,
     },
 
-    // cssFocusedLabel: {
-    //   color : '#EFA500' 
-    // },
+    cssFocusedLabel: {
+        color: '#EFA500 !important'
+    },
 
     cssOutlinedInput: {
         '&$cssFocused $notchedOutline': {
             borderColor: '#EFA500 !important',
-            color: '#EFA500 !important',
+            color: '#EFA500 !important'
         }
     },
 
@@ -75,14 +87,9 @@ const styles = textjust => ({
         color: '#EFA500 !important'
 
     },
-    cssFocusedLabel: {
-        color: '#EFA500 !important'
-
-
-    },
 
     notchedOutline: {
-        borderWidth: '1px',
+        borderWidth: '3px',
         borderColor: '#EFA500 !important'
     },
 
@@ -90,27 +97,21 @@ const styles = textjust => ({
 
 const texttheme = createMuiTheme({
     overrides: {
-        MuiOutlinedInput: {
-            root: {
-                MuiOutlinedInput: {
-                    focused: {
-                        MuiOutlinedInput: {
-                            notchedOutline: {
-                                borderColor: ' #EFA500 !important',
-                            }
-                        }
-                    }
-                }
+
+        MuiFormLabel: {
+            focused: {
+                color: '#EFA500 !important'
             }
         }
-
-
-
-
-
-
     }
+
 });
+
+
+
+
+
+
 class Login extends Component {
 
     constructor() {
@@ -214,7 +215,7 @@ class Login extends Component {
 
 
                         <div className={style.iconDiv}>
-                            <img src={require("../assets/Logo.png")} />
+                            <img src={require('../../assets/Logo.png')} />
                         </div>
                     </Card>
                     <Card className={style.cardComponents}>
@@ -233,9 +234,7 @@ class Login extends Component {
                                                 label="Email"
                                                 placeholder=" E-mail"
                                                 value={email}
-                                                onChange={this.changeEmail}
-                                                error={this.state.emailError}
-                                                helperText={this.state.emailError}
+
                                                 InputLabelProps={{
                                                     classes: {
                                                         root: classes.cssFocusedLabel,
@@ -250,7 +249,9 @@ class Login extends Component {
                                                         notchedOutline: classes.notchedOutline,
                                                     },
                                                 }}
-                                            />
+                                                onChange={this.changeEmail}
+                                                error={this.state.emailError}
+                                                helperText={this.state.emailError} />
                                         </div>
                                     </MuiThemeProvider>
                                 </fieldset>

@@ -15,7 +15,7 @@ class Appheader extends Component {
                 <Row>
                     <Col xs={2} className={style.firstColumn}>
                         <div>
-                            <img className={style.mainLogo} src={require('../assets/Group 441.png')} />
+                            <img className={style.mainLogo} src={require('../../assets/Group 441.png')} />
                         </div>
                     </Col>
                     <Col xs={7}>
@@ -26,7 +26,7 @@ class Appheader extends Component {
                                     id='searchButton'
                                     color='white'
                                 >
-                                    <img className={style.searchLogo} src={require("../assets/magnifying-glass-icon.png")}
+                                    <img className={style.searchLogo} src={require("../../assets/magnifying-glass-icon.png")}
                                         alt="" />
                                 </IconButton>
 
@@ -47,10 +47,10 @@ class Appheader extends Component {
                         <div className={style.row}>
 
                             <div>
-                                <img className="imageOnheader" src={require('../assets/ic_archive_24px.png')} />
+                                <img className="imageOnheader" src={require('../../assets/ic_archive_24px.png')} />
                             </div>
                             <div>
-                                <img className="imageOnheader" src={require("../assets/ic_notifications_24px.png")} />
+                                <img className="imageOnheader" src={require("../../assets/ic_notifications_24px.png")} />
                             </div>
 
                             <Avatar />

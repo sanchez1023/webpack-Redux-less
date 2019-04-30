@@ -1,8 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Link, NavLink } from 'react-router-dom';
-import Login from './components/login';
 import Dashboard from './pages/Dashboad';
-import appHeader from './components/Appheader'
+import Login from './components/Loginpage/login';
 
 const AppRouter = () => (
     <BrowserRouter>

@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import Appheader from "../components/Appheader";
-import Panel from "../components/Panel";
+import Appheader from '../components/Loginpage/Appheader';
+import Panel from "../components/Panel/Panel";
 import style from "./Dashboard.less"
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button';
-import Storypanel from "../components/Storypanel";
-import Addredirectcard from "../components/Addredirect";
+import Storypanel from "../components/Panel/Storypanel";
+import Addredirectcard from "../components/Redirect/Addredirect";
 import { OPEN_ADDREDIECT_DAILOG, TOGGLE_DASHBOARD_STORY_SELECTED, TOGGLE_DASHBOARD_ARTICLE_SELECTED } from "../constants/actionTypes";
 import { connect } from 'react-redux';
-import Imageselect from "../components/Imageselect";
+import Imageselect from "../components/Imageselect/Imageselect";
 
 
 const mapDispatchToProps = dispatch => ({

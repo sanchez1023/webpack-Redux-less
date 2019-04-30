@@ -8,10 +8,10 @@ import ReactTooltip from 'react-tooltip'
 import Button from 'react-bootstrap/Button';
 import Redirectcard from "./Redirect";
 import { connect } from 'react-redux';
-import { OPEN_TOGGLE_REDIRECT_DAILOG, CLOSE_EXTEND_PANEL, CLOSE_SHARE_DAILOG, OPEN_SHARE_DAILOG, OPEN_ADDREDIECT_DAILOG, OPEN_EXTEND_PANEL } from '../constants/actionTypes';
+import { OPEN_TOGGLE_REDIRECT_DAILOG, CLOSE_EXTEND_PANEL, CLOSE_SHARE_DAILOG, OPEN_SHARE_DAILOG, OPEN_ADDREDIECT_DAILOG, OPEN_EXTEND_PANEL } from '../../constants/actionTypes';
 import Sharecard from "./Share";
 import * as ActionCreators from 'redux'
-import store from '../store'
+import store from '../../store'
 import { runInNewContext } from "vm";
 const bindActionCreators = ActionCreators;
 // const popover = (
@@ -91,16 +91,16 @@ class Panel extends Component {
             <div className={style.panelDiv}>
 
                 <Card className={style.cardPanel}>
-                    <img src={require("../assets/0 (1).png")} />
+                    <img src={require("../../assets/0 (1).png")} />
 
                     <div className={style.toogleRedirect}>
                         {
                             !this.props.redirect ?
                                 (
-                                    <img onClick={() => this.toggleRedirect()} src={require("../assets/Off.svg")} />)
+                                    <img onClick={() => this.toggleRedirect()} src={require("../../assets/Off.svg")} />)
                                 :
                                 (
-                                    <img onClick={() => this.toggleRedirect()} src={require("../assets/ON.svg")} />
+                                    <img onClick={() => this.toggleRedirect()} src={require("../../assets/ON.svg")} />
                                 )
                         }
                     </div>
@@ -108,15 +108,15 @@ class Panel extends Component {
                         <div className={style.paneliconDiv}>
 
                             <div className={style.openlinkDiv}>
-                                <img onClick={() => this.openLink()} src={require("../assets/ic_open_in_new_24px.png")} alt="open-link" />
+                                <img onClick={() => this.openLink()} src={require("../../assets/ic_open_in_new_24px.png")} alt="open-link" />
                             </div>
 
                             <div className={style.copyiconDiv} data-tip="Link Copied">
-                                <img onClick={() => this.copyLink('http://google.com')} src={require("../assets/copy.png")} alt="copy-icon" />
+                                <img onClick={() => this.copyLink('http://google.com')} src={require("../../assets/copy.png")} alt="copy-icon" />
                                 <ReactTooltip place="bottom" />
                             </div>
                             <div className={style.shareiconDiv}>
-                                <img onClick={() => this.handleShare()} src={require("../assets/share.png")} alt="share-icon" />
+                                <img onClick={() => this.handleShare()} src={require("../../assets/share.png")} alt="share-icon" />
                             </div>
 
                             <OverlayTrigger trigger="click" placement="bottom-start" overlay={
@@ -132,7 +132,7 @@ class Panel extends Component {
 
 
 
-                                    <img className={style.editIcon} src={require("../assets/icons8-menu-vertical-24.png")} alt="edit-icon" />
+                                    <img className={style.editIcon} src={require("../../assets/icons8-menu-vertical-24.png")} alt="edit-icon" />
 
                                 </div>
                             </OverlayTrigger>

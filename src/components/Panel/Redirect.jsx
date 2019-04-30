@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import { Dialog, InputBase, IconButton, Toolbar, Chip, Button, TextField } from '@material-ui/core';
 import style from './Panel.less'
-import store from '../store';
-import { TOGGLE_REDIRECT, CHANGE_TOGGLE, CLOSE_TOGGLE_REDIRECT_DAILOG, APPLY_REDIRECT_OFF, APPLY_REDIRECT_ON } from '../constants/actionTypes';
+import store from '../../store';
+import { TOGGLE_REDIRECT, CHANGE_TOGGLE, CLOSE_TOGGLE_REDIRECT_DAILOG, APPLY_REDIRECT_OFF, APPLY_REDIRECT_ON } from '../../constants/actionTypes';
 import { connect } from 'react-redux';
 
 

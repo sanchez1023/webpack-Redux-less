@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ReactCrop from 'react-image-crop';
 import style from './imageSelect.less'
 
-import { CLOSE_IMAGE_SELECT } from '../constants/actionTypes';
+import { CLOSE_IMAGE_SELECT } from '../../constants/actionTypes';
 
 function mapStateToProps(state) {
     console.log("im  iamge selct --" + state.addRedirect.imageSelectdialog)

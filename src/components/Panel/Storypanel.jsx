@@ -9,24 +9,24 @@ class Storypanel extends Component {
 
 
             <Card className={style.cardPanel}>
-                <img src={require("../assets/Image 1.png")} />
+                <img src={require("../../assets/Image 1.png")} />
 
 
                 <div className={style.iconDiv}>
                     <div className={style.paneliconDiv}>
 
                         <div className={style.openlinkDiv}>
-                            <img src={require("../assets/ic_open_in_new_24px.png")} alt="open-link" />
+                            <img src={require("../../assets/ic_open_in_new_24px.png")} alt="open-link" />
                         </div>
 
                         <div className={style.copyiconDiv}>
-                            <img src={require("../assets/copy.png")} alt="copy-icon" />
+                            <img src={require("../../assets/copy.png")} alt="copy-icon" />
                         </div>
                         <div className={style.shareiconDiv}>
-                            <img src={require("../assets/share.png")} alt="share-icon" />
+                            <img src={require("../../assets/share.png")} alt="share-icon" />
                         </div>
                         <div className={style.editiconDiv}>
-                            <img src={require("../assets/icons8-menu-vertical-24.png")} alt="edit-icon" />
+                            <img src={require("../../assets/icons8-menu-vertical-24.png")} alt="edit-icon" />
                         </div>
                     </div>
                 </div>

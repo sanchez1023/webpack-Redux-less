@@ -6,9 +6,8 @@ import { Card } from 'antd';
 import Col from 'react-bootstrap/Col';
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Input } from 'antd';
-import { INPUT_DESCRIPTION, APPLY_REDIRECT_ON, APPLY_REDIRECT_OFF, ARTICLE_SELECTED, STORY_SELECTED, OPEN_IMAGE_SELECT, CLOSE_ADDREDIRECT_DAILOG } from '../constants/actionTypes';
-import { connect } from 'react-redux';
-
+import { INPUT_DESCRIPTION, APPLY_REDIRECT_ON, APPLY_REDIRECT_OFF, ARTICLE_SELECTED, STORY_SELECTED, OPEN_IMAGE_SELECT, CLOSE_ADDREDIRECT_DAILOG } from '../../constants/actionTypes';
+import { connect } from 'react-redux'
 const { TextArea } = Input;
 const theme = createMuiTheme({
     overrides: {
@@ -149,10 +148,10 @@ class Addredirectcard extends Component {
                                 </div>
                                 <div>
                                     {this.props.data.applyRedirect ? (
-                                        <img onClick={() => { this.handleToggleOFF() }} src={require('../assets/ON.svg')} />)
+                                        <img onClick={() => { this.handleToggleOFF() }} src={require('../../assets/ON.svg')} />)
                                         :
                                         (
-                                            <img onClick={() => { this.handleToggleON() }} src={require('../assets/Off.svg')} />)
+                                            <img onClick={() => { this.handleToggleON() }} src={require('../../assets/Off.svg')} />)
 
 
                                     }
@@ -162,12 +161,12 @@ class Addredirectcard extends Component {
                             <div className={style.bottomButtonDiv}>
 
                                 <div className={style.imageAndhash}>
-                                    <img onClick={() => this.openImageselect()} className={style.bottomImage} src={require("../assets/photo-camera.svg")} />
-                                    <img className={style.bottomImage} src={require("../assets/video-camera.svg")} />
-                                    <img className={style.bottomImage} src={require("../assets/file.svg")} />
+                                    <img onClick={() => this.openImageselect()} className={style.bottomImage} src={require("../../assets/photo-camera.svg")} />
+                                    <img className={style.bottomImage} src={require("../../assets/video-camera.svg")} />
+                                    <img className={style.bottomImage} src={require("../../assets/file.svg")} />
                                     <MuiThemeProvider theme={avatarTheme}>
                                         <Chip label="Add Hashtag" onClick={() => this.addHashtag()}
-                                            avatar={<img className={style.addImage} src={require('../assets/add.svg')} />}
+                                            avatar={<img className={style.addImage} src={require('../../assets/add.svg')} />}
                                         >
                                             Add Hashtag
                                              </Chip>
