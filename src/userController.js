@@ -23,7 +23,8 @@ export default function login(email, password) {
     return axios.post(databaseConfig.API, data,
         { headers: headers })
         .then(response => {
-            console.log("before response--" + response.data.message)
+            debugger;
+            console.log("before response--" + response.status)
             if (response.status === databaseConfig.success) {
                 console.log('response====' + response.data.status)
                 console.log("response in userctrl  " + response.data.code)
@@ -37,8 +38,15 @@ export default function login(email, password) {
             }
 
         }).catch((error) => {
-            const a = error.toJSON();
+
             console.log("response in userctrl  " + error);
+            if ('Error: Request failed with status code 401' == error) {
+                error.message('worng password')
+            }
+            if ('Error: Request failed with status code 404' == error) {
+                error.message('zxczXC password')
+            }
+
             console.log("error in userctr" + a);
             store.dispatch({ type: DATABASE_ERROR, a })
 

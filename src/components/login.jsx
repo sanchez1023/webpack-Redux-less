@@ -18,6 +18,8 @@ import { compose } from "recompose";
 import login from "../userController";
 import { message } from 'antd';
 import { Spin, Alert } from 'antd';
+import rootSaga from "../reduxSaga/loginSaga";
+import 'antd/dist/antd.less';
 
 
 var a = require('../userController');
@@ -30,8 +32,8 @@ const mapDispatchToProps = dispatch => ({
         dispatch({ type: INPUT_EMAIL, key: 'email', value }),
     onChangePassword: value =>
         dispatch({ type: INPUT_PASSWORD, key: 'password', value }),
-    onSubmit: (email, password) =>
-        dispatch({ type: LOGIN_USER, payload: login(email, password) }),
+    onSubmit: (data) =>
+        dispatch({ type: LOGIN_USER, payload: rootSaga(data) }),
     // onUnload: () =>
     //     dispatch({ type: LOGIN_PAGE_UNLOADED })
 });
@@ -119,14 +121,18 @@ class Login extends Component {
         this.onLogin = (email, password) => ev => {
             ev.preventDefault();
             console.log("email ------" + email);
-            // message.config({
-            //     top: 100,
-            //     left: 300,
-            //     duration: 6,
-            //     maxCount: 3,
-            // })
-            // message.loading('Proccessing..', 5)
-            //     .then(() => message.success('Loading finished', 2.5))
+            message.config({
+                top: 100,
+                left: 300,
+                duration: 6,
+                maxCount: 3,
+            })
+            message.loading('Proccessing..', 5)
+                .then(() => message.success('Loading finished', 2.5))
+            const data = {
+                email: email,
+                password: password,
+            }
             if (this.state.emailError === "" && this.state.passwordError === "") {
 
                 {
@@ -134,7 +140,7 @@ class Login extends Component {
                         loading: true,
                     })
                     console.log("loading --" + this.state.loading)
-                    this.props.onSubmit(email, password);
+                    this.props.onSubmit(data);
                     // this.props.history.push('/home');
                 }
                 // this.props.onSubmit(email, password);
@@ -144,7 +150,7 @@ class Login extends Component {
             passwordIsMasked: false,
             emailError: "",
             passwordError: "",
-            loading: true,
+            loading: false,
 
         }
     }
@@ -195,10 +201,11 @@ class Login extends Component {
         const email = this.props.email
         const password = this.props.password
         const classes = this.props;
-        const success = this.props.success 
+        const success = this.props.success
         const error = this.props.error
         console.log('erroe in login ' + error)
         console.log('succes in login ' + success)
+        console.log("is loading in ---" + this.props.isLoading)
 
         return (
             <div className={style.loginMaindiv}>

@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 import { Dialog, InputBase, IconButton, Toolbar, Chip, Button, TextField } from '@material-ui/core';
 import style from './Share.less';
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import panelReducer from '../reducers/panelReducer';
+import { CLOSE_SHARE_DAILOG } from '../constants/actionTypes';
+import { connect } from 'react-redux';
+
 
 
 const theme = createMuiTheme({
@@ -23,11 +27,21 @@ const theme = createMuiTheme({
         }
     }
 })
+const mapDispatchToProps = dispatch => ({
+    closeDailog: () => dispatch({ type: CLOSE_SHARE_DAILOG })
+})
+function mapStateToProps(state) {
+    console.log("in sahe open----" + state.panelReducer.openSharedialog)
+    return {
+        open: state.panelReducer.openSharedialog
+    }
+}
 
 
 class Sharecard extends Component {
     constructor(props) {
         super(props);
+        this.handleCancel = () => this.props.closeDailog()
         this.state = {
 
         }
@@ -37,14 +51,9 @@ class Sharecard extends Component {
 
 
 
-    closeDailog() {
-        console.log("in close dialog")
-        this.props.close();
-    }
 
-    handleCancel() {
-        this.props.close();
-    }
+
+
 
 
 
@@ -54,6 +63,8 @@ class Sharecard extends Component {
 
 
     render() {
+        console.log("in share dailog====---" + this.props.open);
+
         return (
             <MuiThemeProvider theme={theme}>
                 <Dialog
@@ -114,4 +125,4 @@ class Sharecard extends Component {
         );
     }
 }
-export default Sharecard
+export default connect(mapStateToProps, mapDispatchToProps)(Sharecard)

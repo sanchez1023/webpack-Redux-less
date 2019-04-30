@@ -8,81 +8,84 @@ import ReactTooltip from 'react-tooltip'
 import Button from 'react-bootstrap/Button';
 import Redirectcard from "./Redirect";
 import { connect } from 'react-redux';
-import { TOGGLE_REDIRECT, CHANGE_TOGGLE, OPEN_TOGGLE_REDIRECT_DAILOG } from '../constants/actionTypes';
+import { OPEN_TOGGLE_REDIRECT_DAILOG, CLOSE_EXTEND_PANEL, CLOSE_SHARE_DAILOG, OPEN_SHARE_DAILOG, OPEN_ADDREDIECT_DAILOG, OPEN_EXTEND_PANEL } from '../constants/actionTypes';
 import Sharecard from "./Share";
 import * as ActionCreators from 'redux'
 import store from '../store'
+import { runInNewContext } from "vm";
 const bindActionCreators = ActionCreators;
-const popover = (
-    <Popover >
-        <MenuItem>Edit </MenuItem>
-        <MenuItem>Archive </MenuItem>
-        <MenuItem>Delete </MenuItem>
-    </Popover>
-);
+// const popover = (
+//     <Popover >
+//         <MenuItem onClick={() => this.editRedirect()}>Edit </MenuItem>
+//         <MenuItem>Archive </MenuItem>
+//         <MenuItem>Delete </MenuItem>
+//     </Popover>
+// );
+// function mapStateToProps(state) {
+
+//     return {
+//         data: state.addRedirect
+//     }
+
+// }
+const mapDispatchToProps = dispatch => ({
+    addDescription: value =>
+        dispatch({ type: INPUT_DESCRIPTION, value }),
+    toggleRedirect: () =>
+        dispatch({ type: OPEN_TOGGLE_REDIRECT_DAILOG }),
+    handleRedirectOFF: () =>
+        dispatch({ type: APPLY_REDIRECT_OFF }),
+    selectArticle: () =>
+        dispatch({ type: ARTICLE_SELECTED }),
+    selectStory: () =>
+        dispatch({ type: STORY_SELECTED }),
+    openShare: () =>
+        dispatch({ type: OPEN_SHARE_DAILOG }),
+    openRedirectedit: () =>
+        dispatch({ type: OPEN_ADDREDIECT_DAILOG }),
+    openExtend: () =>
+        dispatch({ type: OPEN_EXTEND_PANEL }),
+    closeExtend: () =>
+        dispatch({ type: CLOSE_EXTEND_PANEL })
+})
 class Panel extends Component {
     constructor() {
         super();
         this.state = {
-            openRedirect: false,
-            toolTip: false,
-            share: false,
-            extend: false,
+
         }
-        this.toggleRedirect = this.toggleRedirect.bind(this)
-        this.closeRedirect = this.closeRedirect.bind(this)
-        this.handleShare = this.handleShare.bind(this)
-        this.closeShare = this.closeShare.bind(this)
-        this.toggleExtend = this.toggleExtend.bind(this)
+        this.toggleRedirect = () => this.props.toggleRedirect()
+        this.editRedirect = () => this.props.openRedirectedit()
+        this.handleShare = () => this.props.openShare()
+        this.closeExtend = () => this.props.closeExtend()
+        this.openExtend = () => this.props.openExtend()
     }
-    toggleExtend() {
-        this.setState({
-            extend: !this.state.extend,
-        })
-        console.log("in tooglr extend" + this.state.extend);
 
-    }
-    toggleRedirect() {
-        store.dispatch({ type: OPEN_TOGGLE_REDIRECT_DAILOG })
 
-        console.log("in toggle redirect" + this.state.openRedirect)
-    }
-    closeRedirect() {
-        console.log("in clos dialogee");
 
-        this.setState({
-            openRedirect: false,
-        })
-    }
     handleTooltip() {
         this.setState({
             toolTip: true
         })
 
     }
-    handleShare() {
-        console.log("in open share" + this.state.share)
-        this.setState({
-            share: true,
-        })
-    }
-    closeShare() {
-        this.setState({
-            share: false
-        })
-    }
+
+
     openLink() {
-        window.open('http://google.com')
+        window.open('http://bridgelabz.com/')
     }
 
     copyLink(link) {
         console.log('in  copy ' + link)
-        var a = link
-        document.body.appendChild(a);
+
+        // link.select("www.google.com")
+
+
         document.execCommand("copy")
-        document.body.removeChild(a);
+
     }
     render() {
+        console.log('in redirect  panel----' + this.props.redirect)
 
         return (
             <div className={style.panelDiv}>
@@ -91,8 +94,15 @@ class Panel extends Component {
                     <img src={require("../assets/0 (1).png")} />
 
                     <div className={style.toogleRedirect}>
-
-                        <img onClick={() => this.toggleRedirect()} src={require("../assets/ON.svg")} />
+                        {
+                            !this.props.redirect ?
+                                (
+                                    <img onClick={() => this.toggleRedirect()} src={require("../assets/Off.svg")} />)
+                                :
+                                (
+                                    <img onClick={() => this.toggleRedirect()} src={require("../assets/ON.svg")} />
+                                )
+                        }
                     </div>
                     <div className={style.iconDiv}>
                         <div className={style.paneliconDiv}>
@@ -109,7 +119,12 @@ class Panel extends Component {
                                 <img onClick={() => this.handleShare()} src={require("../assets/share.png")} alt="share-icon" />
                             </div>
 
-                            <OverlayTrigger trigger="click" placement="bottom-start" overlay={popover}>
+                            <OverlayTrigger trigger="click" placement="bottom-start" overlay={
+                                <Popover >
+                                    <MenuItem onClick={() => this.editRedirect()}>Edit </MenuItem>
+                                    <MenuItem>Archive </MenuItem>
+                                    <MenuItem>Delete </MenuItem>
+                                </Popover>}>
 
 
 
@@ -125,7 +140,7 @@ class Panel extends Component {
                     </div>
                     <Card className={style.expansionCard}>
                         {
-                            !this.state.extend ?
+                            !this.props.extend ?
                                 (
                                     <div className={style.nonExpanddiv}>
                                         <div className={style.titleDiv}>
@@ -133,7 +148,7 @@ class Panel extends Component {
                            </div>
                                         <div className={style.hashtagDiv}>#BridgeLabz #Skilling #Engineers #Jobs</div>
                                         <div className={style.cardextendDiv}>
-                                            <div onClick={() => this.toggleExtend()} className={style.cardExtend}>
+                                            <div onClick={() => this.openExtend()} className={style.cardExtend}>
                                             </div>
                                         </div>
 
@@ -151,7 +166,7 @@ class Panel extends Component {
                                 </div>
 
                                         <div className={style.cardextendDiv}>
-                                            <div onClick={() => this.toggleExtend()} className={style.cardExtend}>
+                                            <div onClick={() => this.closeExtend()} className={style.cardExtend}>
                                             </div>
                                         </div>
 
@@ -166,11 +181,9 @@ class Panel extends Component {
 
 
                     <Redirectcard
-                        open={this.state.openRedirect}
-                        close={this.closeRedirect}
+
                     />
-                    <Sharecard open={this.state.share}
-                        close={this.closeShare}
+                    <Sharecard
                     />
                 </Card>
             </div>
@@ -181,16 +194,16 @@ class Panel extends Component {
 function mapStateToProps(state) {
 
     return {
-        toggle: state.toggleRedirect.state.Toggle,
+        toggle: state.panelReducer,
+        extend: state.panelReducer.extend,
+        redirect: state.addRedirect.applyRedirect,
+
 
     }
 }
-export const getUserDetailsRequest = () => ({
-    type: "TOGGLE_REDIRECT",
-
-});
 
 
 
 
-export default connect(mapStateToProps)(Panel);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Panel);

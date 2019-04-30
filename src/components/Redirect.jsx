@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Dialog, InputBase, IconButton, Toolbar, Chip, Button, TextField } from '@material-ui/core';
 import style from './Panel.less'
 import store from '../store';
-import { TOGGLE_REDIRECT, CHANGE_TOGGLE, CLOSE_TOGGLE_REDIRECT_DAILOG } from '../constants/actionTypes';
+import { TOGGLE_REDIRECT, CHANGE_TOGGLE, CLOSE_TOGGLE_REDIRECT_DAILOG, APPLY_REDIRECT_OFF, APPLY_REDIRECT_ON } from '../constants/actionTypes';
 import { connect } from 'react-redux';
 
 
@@ -21,17 +21,25 @@ class Redirectcard extends Component {
         console.log("in close dialog")
         store.dispatch({ type: CLOSE_TOGGLE_REDIRECT_DAILOG })
     }
-
-    changeDialog() {
-        if (!this.props.toggle.age) {
-            store.dispatch({ type: TOGGLE_REDIRECT })
-        }
-        else {
-            store.dispatch({ type: CHANGE_TOGGLE })
-        }
-        this.props.close();
-
+    redirectOff() {
+        store.dispatch({ type: APPLY_REDIRECT_OFF })
+        store.dispatch({ type: CLOSE_TOGGLE_REDIRECT_DAILOG })
     }
+    redirectOn() {
+        store.dispatch({ type: APPLY_REDIRECT_ON })
+        store.dispatch({ type: CLOSE_TOGGLE_REDIRECT_DAILOG })
+    }
+
+    // changeDialog() {
+    //      {
+    //         store.dispatch({ type: TOGGLE_REDIRECT })
+    //     }
+    //     else {
+    //         store.dispatch({ type: CHANGE_TOGGLE })
+    //     }
+    //     this.props.close();
+
+
 
 
 
@@ -41,6 +49,7 @@ class Redirectcard extends Component {
 
 
     render() {
+        console.log("in redirect ----" + this.props.redirect)
         return (
             <Dialog open={this.props.open}>
                 <div>
@@ -61,11 +70,21 @@ class Redirectcard extends Component {
                             <Button onClick={() => this.closeDailog()}>
                                 Cancel
                          </Button>
-                            <Button variant="contained" id={style.updateButton}
+                            {
+                                !this.props.redirect ?
+                                    (
+                                        <Button variant="contained" id={style.updateButton}
 
 
-                                onClick={(event) => this.changeDialog(event)} fullWidth={true}  ><h> Yes</h></Button>
+                                            onClick={() => this.redirectOn()} fullWidth={true}  ><h> Yes</h></Button>
+                                    ) :
+                                    (
+                                        <Button variant="contained" id={style.updateButton}
 
+
+                                            onClick={() => this.redirectOff()} fullWidth={true}  ><h> Yes</h></Button>
+                                    )
+                            }
 
                         </div>
                     </div>
@@ -77,8 +96,8 @@ class Redirectcard extends Component {
 function mapStateToProps(state) {
     // console.log("state in in redirect--" + state.toggleRedirect.state.Toggle.age)
     return {
-        toggle: state.toggleRedirect.state.Toggle,
-        newState: state.toggleRedirect.state.Toggle
+        open: state.panelReducer.openRedirectdialog,
+        redirect: state.addRedirect.applyRedirect
     }
 }
 export default connect(mapStateToProps)(Redirectcard);
