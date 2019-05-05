@@ -1,9 +1,10 @@
-import { OPEN_ADDREDIECT_DAILOG, CLOSE_ADDREDIRECT_DAILOG, TOGGLE_DASHBOARD_ARTICLE, TOGGLE_DASHBOARD_ARTICLE_SELECTED, TOGGLE_DASHBOARD_STORY_SELECTED } from "../constants/actionTypes";
+import { OPEN_ADDREDIECT_DAILOG, CLOSE_ADDREDIRECT_DAILOG, GETCARD_RESPONSE,TOGGLE_DASHBOARD_ARTICLE, TOGGLE_DASHBOARD_ARTICLE_SELECTED, TOGGLE_DASHBOARD_STORY_SELECTED, GETCARD_ASYNC } from "../constants/actionTypes";
 
 
 export default (state = {
     openDailog: false,
     article: false,
+    cards:[],loading:false
 }, action) => {
 
     switch (action.type) {
@@ -12,6 +13,7 @@ export default (state = {
             return {
                 ...state,
                 openDailog: true,
+                note: action
             };
         case CLOSE_ADDREDIRECT_DAILOG:
             return {
@@ -27,6 +29,17 @@ export default (state = {
             return {
                 ...state,
                 article: false
+            }
+            case GETCARD_RESPONSE:
+            return{
+                ...state,
+                cards: action.payload,
+                loading:false,
+            }
+            case GETCARD_ASYNC:
+            return {
+               ...state,
+               loading:true,
             }
         default:
             return state

@@ -1,13 +1,13 @@
 import {
 
-    INPUT_EMAIL, INPUT_PASSWORD, LOGIN_USER, DATABASE_ERROR, LOGIN_SUCCESS, LOGIN_ASYNC
+    INPUT_EMAIL, INPUT_PASSWORD, LOGIN_USER, DATABASE_ERROR, LOGIN_SUCCESS, LOGIN_ASYNC, LOGIN_RESPONSE
 } from '../constants/actionTypes';
 
 const userCredential = {
     error: "",
 
 }
-export default (state = { isLoading:false }, action) => {
+export default (state = { isLoading: false, success: [], error: [] }, action) => {
     switch (action.type) {
 
         case INPUT_EMAIL:
@@ -21,23 +21,27 @@ export default (state = { isLoading:false }, action) => {
         case LOGIN_USER:
         case DATABASE_ERROR: {
             return {
-                ...state, userCredential: {
-                    error: action.value
-                }
+                ...state,
+                error: action.payload,
+                isLoading: false
+
 
 
             }
 
         }
-        case LOGIN_SUCCESS: {
+        case LOGIN_RESPONSE: {
+
             return {
-                ...state, [action.key]: action.value
+                ...state, success: action.payload,
+                isLoading: false
             }
+
         }
-            case LOGIN_ASYNC:
+        case LOGIN_ASYNC:
             return {
                 ...state,
-                isLoading:true
+                isLoading: true
             }
         default:
             return state;

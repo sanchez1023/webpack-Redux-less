@@ -41,8 +41,8 @@ const mapDispatchToProps = dispatch => ({
         dispatch({ type: STORY_SELECTED }),
     openShare: () =>
         dispatch({ type: OPEN_SHARE_DAILOG }),
-    openRedirectedit: () =>
-        dispatch({ type: OPEN_ADDREDIECT_DAILOG }),
+    openRedirectedit: (note) =>
+        dispatch({ type: OPEN_ADDREDIECT_DAILOG, payload: note }),
     openExtend: () =>
         dispatch({ type: OPEN_EXTEND_PANEL }),
     closeExtend: () =>
@@ -55,7 +55,7 @@ class Panel extends Component {
 
         }
         this.toggleRedirect = () => this.props.toggleRedirect()
-        this.editRedirect = () => this.props.openRedirectedit()
+        this.editRedirect = (note) => this.props.openRedirectedit(note)
         this.handleShare = () => this.props.openShare()
         this.closeExtend = () => this.props.closeExtend()
         this.openExtend = () => this.props.openExtend()
@@ -72,7 +72,7 @@ class Panel extends Component {
 
 
     openLink() {
-        window.open('http://bridgelabz.com/')
+        window.open(this.props.note.redirect_link)
     }
 
     copyLink(link) {
@@ -85,17 +85,17 @@ class Panel extends Component {
 
     }
     render() {
-        console.log('in redirect  panel----' + this.props.redirect)
-
+        console.log("undeinded titlr " + JSON.stringify(this.props.note))
+        var date = this.props.note.update_stamp.slice(0, 10)
         return (
             <div className={style.panelDiv}>
 
                 <Card className={style.cardPanel}>
-                    <img src={require("../../assets/0 (1).png")} />
+                    <img className={style.imageStyle} src={this.props.note.image}  />
 
                     <div className={style.toogleRedirect}>
                         {
-                            !this.props.redirect ?
+                            !this.props.note.redirect ?
                                 (
                                     <img onClick={() => this.toggleRedirect()} src={require("../../assets/Off.svg")} />)
                                 :
@@ -121,7 +121,7 @@ class Panel extends Component {
 
                             <OverlayTrigger trigger="click" placement="bottom-start" overlay={
                                 <Popover >
-                                    <MenuItem onClick={() => this.editRedirect()}>Edit </MenuItem>
+                                    <MenuItem onClick={() => this.editRedirect(this.props.note)}>Edit </MenuItem>
                                     <MenuItem>Archive </MenuItem>
                                     <MenuItem>Delete </MenuItem>
                                 </Popover>}>
@@ -144,9 +144,14 @@ class Panel extends Component {
                                 (
                                     <div className={style.nonExpanddiv}>
                                         <div className={style.titleDiv}>
-                                            India is facing a massive skill gap problem with hundreds of engineers..
-                           </div>
-                                        <div className={style.hashtagDiv}>#BridgeLabz #Skilling #Engineers #Jobs</div>
+                                            {this.props.note.title}
+                                        </div>
+                                        <div className={style.dateDiv}>
+                                            {date}
+                                        </div>
+                                        <div className={style.hashtagDiv}>
+                                            #bridgelabz#old #fellowship
+                                        </div>
                                         <div className={style.cardextendDiv}>
                                             <div onClick={() => this.openExtend()} className={style.cardExtend}>
                                             </div>
@@ -158,12 +163,20 @@ class Panel extends Component {
                                 (
                                     <div>
                                         <div className={style.titleDiv}>
-                                            India is facing a massive skill gap problem with hundreds of engineers..
-                           </div>
-                                        <div className={style.hashtagDiv}>#BridgeLabz #Skilling #Engineers #Jobs</div>
+                                            {this.props.note.title}
+                                            <div className={style.dateDiv}>
+
+
+                                                {date}
+                                            </div>
+                                        </div>
+
+                                        <div className={style.hashtagDiv}>
+                                            #bridgelabz#old #fellowship
+                                        </div>
                                         <div className={style.descriptionDiv}>
-                                            India is facing a massive skill gap problem with hundreds of engineers graduating every year but only a few possessing the skills required in the industry now. How can our engineers be trained for future jobs? India is facing a massive skill gap problem with hundreds of engineers graduating every year but only a few possessing .
-                                </div>
+                                            {this.props.note.description}
+                                        </div>
 
                                         <div className={style.cardextendDiv}>
                                             <div onClick={() => this.closeExtend()} className={style.cardExtend}>

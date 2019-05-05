@@ -1,57 +1,53 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import store from "./store";
-import { DATABASE_ERROR, LOGIN_SUCCESS } from './constants/actionTypes';
+import store, { browserHistory } from "./store";
+import { DATABASE_ERROR, LOGIN_SUCCESS, GETCARD_ASYNC } from './constants/actionTypes';
 import { databaseConfig } from './config.js'
 
 
-export default function login(email, password) {
-    var data = {
-        email: email,
-        password: password
+
+const auth = {
+    /**
+    * Logs a user in, returning a promise with `true` when done
+    * @param  {string} username The username of the user
+    * @param  {string} password The password of the user
+    */
+    login(data) {
+
+        var headers = {
+            'Content-Type': 'application/json'
+        }
+        try {
+            return axios.post(databaseConfig.API, data, { headers: headers })
+                .then(response => {
+                    // Save token to local storage
+                    console.log('response in config---' + JSON.stringify(response))
+
+                    return response
+                })
+
+        }
+        catch (error) {
+            console.log("error in usectr--" + error)
+            return Promise.resolve(false)
+
+        }
+    },
+
+    retriveCard() {
+        var headers = {
+            'Content-Type': 'application/json',
+            'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjVjODY1YTc0OWZkNTkxNWFjNjQwZDZhNyJ9LCJpYXQiOjE1NTcwNjY4MDgsImV4cCI6MTU1NzE1MzIwOH0.nTXAeZfpIv5UKD66--FIb7e0DLxq3UXD_2E4vSWLWzQ'
+        }
+
+        return axios.get(databaseConfig.getcards, { headers: headers })
+            .then(response => {
+                console.log("response in ysdde--"+JSON.stringify(response.data))
+                return response.data
+            })
+
+
     }
-    console.log("email in usctr" + email);
-    console.log("pass in userctr" + password);
-
-
-
-    var headers = {
-        'Content-Type': 'application/json'
-    }
-
-    return axios.post(databaseConfig.API, data,
-        { headers: headers })
-        .then(response => {
-            debugger;
-            console.log("before response--" + response.status)
-            if (response.status === databaseConfig.success) {
-                console.log('response====' + response.data.status)
-                console.log("response in userctrl  " + response.data.code)
-                console.log("response in userctrl  " + response.config.cancelToken)
-                var success = response.data.message
-                console.log('succes messga ectr--' + success)
-                // localStorage.setItem('token', response.data.token);
-                // localStorage.setItem('username', response.data.userdetails.firstName + ' ' + response.data.userdetails.lastName);
-                // callback(response)
-                store.dispatch({ type: LOGIN_SUCCESS, success })
-            }
-
-        }).catch((error) => {
-
-            console.log("response in userctrl  " + error);
-            if ('Error: Request failed with status code 401' == error) {
-                error.message('worng password')
-            }
-            if ('Error: Request failed with status code 404' == error) {
-                error.message('zxczXC password')
-            }
-
-            console.log("error in userctr" + a);
-            store.dispatch({ type: DATABASE_ERROR, a })
-
-        });
-
-
-
 }
+export default auth;

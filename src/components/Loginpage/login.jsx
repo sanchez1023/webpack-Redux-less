@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import style from "./login.less";
 import Card from '@material-ui/core/Card';
 import { TextField, InputAdornment, IconButton, } from "@material-ui/core";
-
+import Snackbar from '@material-ui/core/Snackbar';
 import Button from 'react-bootstrap/Button';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -15,14 +15,13 @@ import classes from 'classes'
 import { INPUT_EMAIL, INPUT_PASSWORD, LOGIN_USER } from "../../constants/actionTypes";
 import { connect } from 'react-redux';
 import { compose } from "recompose";
-import login from "../../userController";
 import { message } from 'antd';
 import { Spin, Alert } from 'antd';
 import rootSaga from "../../reduxSaga/loginSaga";
 import 'antd/dist/antd.less';
+import { withRouter } from 'react-router-dom'
 
-
-var a = require('../../userController');
+import Usercontroller from "../../Usercontroller";
 
 
 
@@ -32,8 +31,8 @@ const mapDispatchToProps = dispatch => ({
         dispatch({ type: INPUT_EMAIL, key: 'email', value }),
     onChangePassword: value =>
         dispatch({ type: INPUT_PASSWORD, key: 'password', value }),
-    onSubmit: (data) =>
-        dispatch({ type: LOGIN_USER, payload: rootSaga(data) }),
+    onSubmit: data =>
+        dispatch({ type: LOGIN_USER, payload: data = data }),
     // onUnload: () =>
     //     dispatch({ type: LOGIN_PAGE_UNLOADED })
 });
@@ -122,27 +121,35 @@ class Login extends Component {
         this.onLogin = (email, password) => ev => {
             ev.preventDefault();
             console.log("email ------" + email);
-            message.config({
-                top: 100,
-                left: 300,
-                duration: 6,
-                maxCount: 3,
-            })
-            message.loading('Proccessing..', 5)
-                .then(() => message.success('Loading finished', 2.5))
-            const data = {
+            console.log("paswword ------" + password);
+            var data = {
                 email: email,
-                password: password,
+                password: password
             }
+
+
             if (this.state.emailError === "" && this.state.passwordError === "") {
 
                 {
                     this.setState({
                         loading: true,
                     })
-                    console.log("loading --" + this.state.loading)
-                    this.props.onSubmit(data);
-                    // this.props.history.push('/home');
+                    console.log("loading --" + this.state.loading);
+                    message.config({
+                        top: 100,
+                        left: 300,
+                        duration: 6,
+                        maxCount: 3,
+                    })
+                    message.loading('processing ', 5)
+                        .then(() => message.success(this.props.success, 2.5))
+                    this.props.onSubmit(data)
+
+    
+                }
+                if (this.props.success.status === true) {
+                   s // localStorage.setItem('token', this.props.token);
+                    this.props.history.push('/home')
                 }
                 // this.props.onSubmit(email, password);
             }
@@ -204,8 +211,8 @@ class Login extends Component {
         const classes = this.props;
         const success = this.props.success
         const error = this.props.error
-        console.log('erroe in login ' + error)
-        console.log('succes in login ' + success)
+        console.log('erroe in login ' + JSON.stringify(error))
+        console.log('succes in login ' + JSON.stringify(success))
         console.log("is loading in ---" + this.props.isLoading)
 
         return (
@@ -304,14 +311,33 @@ class Login extends Component {
 
                                 </div>
                                 <div className={style.loginbuttonDiv} >
-                                    <Button type="submit" variant="contained" id={style.loginButton} > Login</Button>
+                                    <Button type="submit" variant="contained" disabled={this.props.isLoading} id={style.loginButton} > Login</Button>
 
                                 </div>
                             </div>
 
+                            <Snackbar
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                open={this.props.success.message}
+                                autoHideDuration={600}
+                                message={this.props.success.message}
+
+                            />
+                            <Snackbar
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'right',
+                                }}
+                                open={this.props.error.message}
+                                autoHideDuration={60}
+                                message={this.props.error.message}
+
+                            />
 
                             <div>
-
                             </div>
                         </form>
                     </Card>
