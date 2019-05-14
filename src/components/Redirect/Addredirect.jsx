@@ -6,8 +6,21 @@ import { Card } from 'antd';
 import Col from 'react-bootstrap/Col';
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Input } from 'antd';
-import { INPUT_DESCRIPTION, APPLY_REDIRECT_ON, APPLY_REDIRECT_OFF, ARTICLE_SELECTED, STORY_SELECTED, OPEN_IMAGE_SELECT, CLOSE_ADDREDIRECT_DAILOG } from '../../constants/actionTypes';
-import { connect } from 'react-redux'
+import {
+    INPUT_DESCRIPTION,
+    APPLY_REDIRECT_ON,
+    APPLY_REDIRECT_OFF,
+    ARTICLE_SELECTED,
+    STORY_SELECTED,
+    OPEN_IMAGE_SELECT,
+    CLOSE_ADDREDIRECT_DAILOG,
+    ADD_REDIRECT, UPDATE_REDIRECT,
+    ON_UPDATE_NOTE,
+    OPEN_EDIT_IMAGE
+} from '../../constants/actionTypes';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { editToggle } from '../../Actioncreator';
 const { TextArea } = Input;
 const theme = createMuiTheme({
     overrides: {
@@ -46,7 +59,11 @@ function mapStateToProps(state) {
 
     return {
         data: state.addRedirect,
-        open: state.dashboard.openDailog
+        open: state.dashboard.openDailog,
+        note: state.panelReducer.note,
+        edit: state.dashboard.fromEdit,
+        image: state.addRedirect.image
+
     }
 
 }
@@ -64,14 +81,28 @@ const mapDispatchToProps = dispatch => ({
     openImageselect: () =>
         dispatch({ type: OPEN_IMAGE_SELECT }),
     closeAddredirectdailog: () =>
-        dispatch({ type: CLOSE_ADDREDIRECT_DAILOG })
-    // onChangePassword: value =>
-    //     dispatch({ type: INPUT_PASSWORD, key: 'password', value }),
-    // onSubmit: (email, password) =>
-    //     dispatch({ type: LOGIN_USER, payload: login(email, password) }),
-    // onUnload: () =>
-    //     dispatch({ type: LOGIN_PAGE_UNLOADED })
+        dispatch({ type: CLOSE_ADDREDIRECT_DAILOG }),
+    addRedirect: (data) =>
+        dispatch({ type: ADD_REDIRECT, payload: data }),
+    updateRedirect: (data) =>
+        dispatch({ type: UPDATE_REDIRECT, payload: data }),
+    changeToggle: (note) => dispatch(editToggle(note)),
+    onUpdate: (note) =>
+        dispatch({ type: ON_UPDATE_NOTE, payload: note }),
+    editSelectimage: (note) =>
+        dispatch({ type: OPEN_EDIT_IMAGE, payload: note })
+
+
 });
+
+
+// onChangePassword: value =>
+//     dispatch({ type: INPUT_PASSWORD, key: 'password', value }),
+// onSubmit: (email, password) =>
+//     dispatch({ type: LOGIN_USER, payload: login(email, password) }),
+// onUnload: () =>
+//     dispatch({ type: LOGIN_PAGE_UNLOADED })
+
 
 class Addredirectcard extends Component {
     constructor(props) {
@@ -88,8 +119,24 @@ class Addredirectcard extends Component {
         }
 
     }
+    redirectOn(note) {
+        note['apply_redirect'] = true
+        console.log("value in togglr -" + note.apply_redirect)
+        // store.dispatch({ type: REDIRECT_ON, payload: note })
+        console.log("value in togglr -" + note.apply_redirect)
+        this.props.onUpdate(note)
+    }
+    redirectOff(note) {
+        note['apply_redirect'] = false
+        console.log("value in togglr -" + note.apply_redirect)
+        // store.dispatch({ type: REDIRECT_ON, payload: note })
+        console.log("value in togglr -" + note.apply_redirect)
+        this.props.onUpdate(note)
+    }
 
-
+    editImageselect(note) {
+        this.props.editSelectimage(note)
+    }
 
     changeDialog() {
         this.props.change();
@@ -101,9 +148,34 @@ class Addredirectcard extends Component {
         this.props.addDescription(descriptionValue);
     }
 
+    onSubmit(description, redirect, image) {
+
+        var data = {
+            title: "new post",
+            image: image,
+            description: description,
+            redirect_link: "https://www.google.com",
+
+
+            apply_redirect: redirect,
+        }
+        this.props.addRedirect(data)
+        this.props.closeAddredirectdailog()
+    }
+    onUpdate(description, image, note) {
+        console.log("in update ---" + JSON.stringify(note))
+        note['description'] = description
 
 
 
+        this.props.onUpdate(note)
+        this.props.updateRedirect(note)
+        this.props.closeAddredirectdailog()
+    }
+    changeRedirect(note) {
+        console.log('n change redirect of ' + JSON.strigyify(note));
+        this.props.changeToggle(note);
+    }
 
 
 
@@ -113,8 +185,15 @@ class Addredirectcard extends Component {
         const Article = this.props.data.article
         const selectedArticlebutton = !Article ? style.articleButton : style.selectedButton
         const selectedStorybutton = Article ? style.storyButton : style.selectedButton
-        console.log('in add redicret apply --' + toggle)
+        console.log("edit in addredirect of description--" + this.props.data.edit);
+        console.log("edit in addredirect of description--" + this.props.note.apply_redirect);
+
+
+        var value = this.props.data.edit ? description : this.props.note.description
+
+        console.log('in add redicret apply --' + value)
         console.log('in ad redicret article --' + this.props.open)
+        console.log('note in edurriirr------' + JSON.stringify(this.props.note));
         return (
 
             <MuiThemeProvider theme={theme}>
@@ -123,16 +202,40 @@ class Addredirectcard extends Component {
                     <div className={style.mainAddredirectdiv}>
                         <div className={style.headerDiv}>
                             <div className={style.addredirectHeader}>
-                                <p>Add Redirect</p>
+                                {
+                                    this.props.edit ? (
+                                        <p>Edit Redirect</p>
+                                    ) : (
+                                            <p>Add Redirect</p>
+                                        )
+
+                                }
+
                             </div>
                         </div>
+
                         <div className={style.descriptionDiv}>
-                            <TextArea id={style.textarea}
-                                onChange={this.addDescription}
-                                value={description}
-                                placeHolder="What you want to say about ?"
-                            >
-                            </TextArea>
+                            {this.props.edit ? (
+                                <TextArea id={style.textarea}
+                                    value={value}
+                                    onChange={this.addDescription}
+
+                                    placeHolder="What you want to say about ?"
+                                >
+                                </TextArea>
+
+                            ) : (
+                                    <TextArea id={style.textarea}
+                                        value={description}
+                                        onChange={this.addDescription}
+
+                                        placeHolder="What you want to say about ?"
+                                    >
+                                    </TextArea>
+                                )
+
+                            }
+
 
                         </div>
 
@@ -146,22 +249,56 @@ class Addredirectcard extends Component {
                                         Story
                                     </div>
                                 </div>
-                                <div>
-                                    {this.props.data.applyRedirect ? (
-                                        <img onClick={() => { this.handleToggleOFF() }} src={require('../../assets/ON.svg')} />)
-                                        :
-                                        (
-                                            <img onClick={() => { this.handleToggleON() }} src={require('../../assets/Off.svg')} />)
+                                <div className={style.toggleDiv}>
+                                    <div >
+                                        {
+                                            this.props.edit ?
+                                                (
+                                                    <div>
+                                                        {this.props.note.apply_redirect ?
+                                                            (
+                                                                <img src={require('../../assets/ON.svg')} onClick={() => this.redirectOff(this.props.note)} />
+                                                            ) :
+                                                            (
+                                                                <img src={require('../../assets/Off.svg')} onClick={() => this.redirectOn(this.props.note)} />
+                                                            )
 
+                                                        }
 
-                                    }
-                                    Apply Redirect
+                                                    </div>
+                                                )
+                                                : (
+                                                    <div>
+                                                        {this.props.data.applyRedirect ? (
+                                                            <img src={require('../../assets/ON.svg')} onClick={() => this.handleToggleOFF()} />
+
+                                                        ) :
+                                                            (
+                                                                <img src={require('../../assets/Off.svg')} onClick={() => this.handleToggleON()} />
+
+                                                            )
+
+                                                        }
+                                                    </div>
+
+                                                )
+                                        }
+                                    </div>
+                                    <div className={style.toggleText}>
+
+                                        Apply Redirect
+                                    </div>
                                 </div>
                             </div>
                             <div className={style.bottomButtonDiv}>
 
                                 <div className={style.imageAndhash}>
-                                    <img onClick={() => this.openImageselect()} className={style.bottomImage} src={require("../../assets/photo-camera.svg")} />
+                                    {this.props.edit ?
+                                        <img onClick={() => this.editImageselect(this.props.note)} className={style.bottomImage} src={require("../../assets/photo-camera.svg")} />
+                                        :
+                                        <img onClick={() => this.openImageselect()} className={style.bottomImage} src={require("../../assets/photo-camera.svg")} />
+                                    }
+
                                     <img className={style.bottomImage} src={require("../../assets/video-camera.svg")} />
                                     <img className={style.bottomImage} src={require("../../assets/file.svg")} />
                                     <MuiThemeProvider theme={avatarTheme}>
@@ -177,8 +314,16 @@ class Addredirectcard extends Component {
 
                                 <div className={style.submitButtondiv}>
                                     <Button variant="contained" id={style.storyButton} onClick={() => this.closeDailog()}> Cancel</Button>
-                                    <Button variant="contained" id={style.articleButton} > Submit</Button>
 
+                                    {
+                                        this.props.edit ? (
+                                            <Button variant="contained" id={style.articleButton} onClick={() => this.onUpdate(description, this.props.image, this.props.note)}> Update</Button>
+
+                                        ) : (
+                                                <Button variant="contained" id={style.articleButton} onClick={() => this.onSubmit(description, this.props.data.applyRedirect, this.props.image)}> Submit</Button>
+
+                                            )
+                                    }
                                 </div>
 
 

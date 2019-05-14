@@ -1,10 +1,29 @@
-import { OPEN_ADDREDIECT_DAILOG, CLOSE_ADDREDIRECT_DAILOG, GETCARD_RESPONSE,TOGGLE_DASHBOARD_ARTICLE, TOGGLE_DASHBOARD_ARTICLE_SELECTED, TOGGLE_DASHBOARD_STORY_SELECTED, GETCARD_ASYNC } from "../constants/actionTypes";
+import {
+    OPEN_ADDREDIECT_DAILOG,
+    CLOSE_ADDREDIRECT_DAILOG,
+    GETCARD_RESPONSE,
+    TOGGLE_DASHBOARD_ARTICLE,
+    TOGGLE_DASHBOARD_ARTICLE_SELECTED,
+    TOGGLE_DASHBOARD_STORY_SELECTED,
+    GETCARD_ASYNC,
+    EDIT_REDIRECT,
+    LINK_COPIED,
+    LINK_COPIED_OFF,
+    EDIT_TOOGLE,
+    RETRIVE_CARD_RESPONSE,
+    RETRIVE_CARD_ASYNC,
+    UPDATEREDIRECT_RESPONSE
+} from "../constants/actionTypes";
 
 
 export default (state = {
     openDailog: false,
-    article: false,
-    cards:[],loading:false
+    article: true,
+    cards: [], loading: false,
+    note: [], fromEdit: false,
+    linkCopied: false,
+    retrive: false,
+    udpateRespone: []
 }, action) => {
 
     switch (action.type) {
@@ -13,12 +32,16 @@ export default (state = {
             return {
                 ...state,
                 openDailog: true,
-                note: action
+
+
             };
         case CLOSE_ADDREDIRECT_DAILOG:
             return {
                 ...state,
                 openDailog: false,
+                fromEdit: false,
+                note: [],
+
             }
         case TOGGLE_DASHBOARD_ARTICLE_SELECTED:
             return {
@@ -30,18 +53,56 @@ export default (state = {
                 ...state,
                 article: false
             }
-            case GETCARD_RESPONSE:
-            return{
+        case GETCARD_RESPONSE:
+            return {
                 ...state,
                 cards: action.payload,
-                loading:false,
+                loading: false,
             }
-            case GETCARD_ASYNC:
+        case GETCARD_ASYNC:
             return {
-               ...state,
-               loading:true,
+                ...state,
+                loading: true,
             }
+        case EDIT_REDIRECT:
+            return {
+                ...state,
+                openDailog: true,
+                fromEdit: true,
+                note: action.payload
+            }
+        case LINK_COPIED:
+            return {
+                ...state,
+                linkCopied: true
+            }
+        case LINK_COPIED_OFF:
+            return {
+                ...state,
+                linkCopied: false
+            }
+        case RETRIVE_CARD_RESPONSE:
+            return {
+                ...state,
+                cards: action.payload,
+                retrive: true
+
+
+
+            }
+        case RETRIVE_CARD_ASYNC:
+            return {
+                ...state,
+
+            }
+        case UPDATEREDIRECT_RESPONSE:
+            return {
+                ...state,
+                updateResponse: action.payload
+            }
+
         default:
             return state
+
     }
 }

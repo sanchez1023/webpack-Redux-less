@@ -6,6 +6,7 @@ import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/
 import panelReducer from '../../reducers/panelReducer';
 import { CLOSE_SHARE_DAILOG } from '../../constants/actionTypes';
 import { connect } from 'react-redux';
+import { databaseConfig } from '../../config';
 
 
 
@@ -24,6 +25,11 @@ const theme = createMuiTheme({
             paper: {
                 overflow: 'visible !Important'
             }
+        }, MuiBackdrop: {
+            root: {
+
+                backgroundColor: ' rgba(0, 0, 0, 0.1)'
+            }
         }
     }
 })
@@ -33,7 +39,8 @@ const mapDispatchToProps = dispatch => ({
 function mapStateToProps(state) {
     console.log("in sahe open----" + state.panelReducer.openSharedialog)
     return {
-        open: state.panelReducer.openSharedialog
+        open: state.panelReducer.openSharedialog,
+        note: state.panelReducer.note
     }
 }
 
@@ -64,7 +71,9 @@ class Sharecard extends Component {
 
     render() {
         console.log("in share dailog====---" + this.props.open);
-
+        const imageUrl = databaseConfig.backendUrl + this.props.note.image
+        console.log("data in share---" + JSON.stringify(this.props.note))
+        console.log("image in share--------" + this.props.note.image)
         return (
             <MuiThemeProvider theme={theme}>
                 <Dialog
@@ -72,7 +81,7 @@ class Sharecard extends Component {
                     open={this.props.open}>
                     <div>
                         <div className={style.sharemainDiv}>
-                            <img className={style.mainImage} src={require('../../assets/0 (1).png')} />
+                            <img src={imageUrl} className={style.mainImage} />
                             <div>
                                 <img onClick={() => this.handleCancel()} className={style.cancelButton} src={require('../../assets/cancel.svg')} />
                             </div>
@@ -103,16 +112,13 @@ class Sharecard extends Component {
                                 </div>
                             </div>
                             <div className={style.titleDiv}>
-                                How to make 80% unemployed Engineers job ready?
+                                {this.props.note.title}
                             </div>
                             <div
                                 className={style.hashtagDiv}>#BridgeLabz #Skilling #Engineers #Jobs
                         </div>
                             <div className={style.descriptionDiv}>
-                                <p>
-
-                                    India is facing a massive skill gap problem with hundreds of engineers graduating every year but only a few possessing the skills required in the industry now. How can our engineers be trained for future jobs? Hi Poonam India is facing a massive skill gap problem with hundreds of engineers graduating every year but only a few possessing the skills required in the industry now.
-                        </p>
+                                {this.props.note.description}
                             </div>
                             <div className={style.bottomDiv}>
                                 <p>Powered by fundooPush</p>

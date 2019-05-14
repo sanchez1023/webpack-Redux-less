@@ -5,7 +5,10 @@ import {
     CLOSE_SHARE_DAILOG,
     OPEN_SHARE_DAILOG,
     OPEN_EXTEND_PANEL,
-    CLOSE_EXTEND_PANEL
+    CLOSE_EXTEND_PANEL,
+    EDIT_TOOGLE,
+    EDIT_REDIRECT_DIALOG,
+    ON_UPDATE_NOTE
 } from "../constants/actionTypes";
 
 
@@ -14,6 +17,7 @@ export default (state = {
     extend: false,
     openSharedialog: false,
     extend: false,
+    note: []
 }, action) => {
 
 
@@ -22,6 +26,7 @@ export default (state = {
             return {
                 ...state,
                 openRedirectdialog: true,
+                note: action.payload
             }
 
 
@@ -38,6 +43,7 @@ export default (state = {
             return {
                 ...state,
                 openSharedialog: true,
+                note: action.payload
             }
         case CLOSE_SHARE_DAILOG:
             return {
@@ -47,15 +53,37 @@ export default (state = {
         case OPEN_EXTEND_PANEL:
             return {
                 ...state,
-                extend: true,
+                note: action.payload,
+
 
             };
         case CLOSE_EXTEND_PANEL:
             return {
                 ...state,
-                extend: false,
+                note: action.payload,
+                isOpen: false
+
+
+
 
             }
+        case EDIT_REDIRECT_DIALOG:
+            return {
+                ...state,
+                note: action.payload
+            }
+        case EDIT_TOOGLE:
+            return {
+                ...state,
+                note: action.payload
+
+            }
+        case ON_UPDATE_NOTE:
+            return {
+                ...state,
+                note: action.payload
+            }
+
 
 
 

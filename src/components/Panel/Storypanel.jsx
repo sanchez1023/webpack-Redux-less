@@ -1,9 +1,32 @@
 import React, { Component } from "react";
 import Card from '@material-ui/core/Card';
 import style from "./Panel.less";
-import storyStyle from './StoryPanel.less'
+import storyStyle from './StoryPanel.less';
+import Popper from '@material-ui/core/Popper';
+import { MenuItem } from "@material-ui/core";
+import Paper from '@material-ui/core/Paper';
 
 class Storypanel extends Component {
+    constructor() {
+        super();
+        this.state = {
+            open: false,
+            anchorEl: null
+        }
+    }
+    async  openMenu(event) {
+        console.log("in ipewnne -1----" + this.state.open);
+
+        const { currentTarget } = event;
+        await this.setState({
+            anchorEl: currentTarget,
+            open: true,
+        });
+        console.log("in ipewnne -2----" + this.state.open);
+        console.log("in ipewnne -2----" + this.state.anchorEl);
+
+    };
+
 
     render() {
         return (
@@ -24,11 +47,18 @@ class Storypanel extends Component {
                             <div className={style.copyiconDiv}>
                                 <img src={require("../../assets/copy.png")} alt="copy-icon" />
                             </div>
-                            <div className={style.shareiconDiv}>
-                                <img src={require("../../assets/share.png")} alt="share-icon" />
-                            </div>
+
                             <div className={style.editiconDiv}>
-                                <img src={require("../../assets/icons8-menu-vertical-24.png")} alt="edit-icon" />
+
+                                <img src={require("../../assets/icons8-menu-vertical-24.png")} alt="edit-icon" onClick={(event) => this.openMenu(event)} />
+                                <Popper open={this.state.open} anchorEl={this.state.anchorEl}>
+                                    <Paper>
+                                        <MenuItem>Edit</MenuItem>
+                                        <MenuItem>Archive</MenuItem>
+                                        <MenuItem>Delete</MenuItem>
+                                    </Paper>
+
+                                </Popper>
                             </div>
                         </div>
                     </div>

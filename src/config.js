@@ -2,7 +2,10 @@
 
 export const databaseConfig = ({
     API: 'http://fundoopush-backend-dev.bridgelabz.com/login',
-    getcards:"http://fundoopush-backend-dev.bridgelabz.com/redirects",
+    getcards: "http://fundoopush-backend-dev.bridgelabz.com/redirects",
+    addRedirect: 'http://fundoopush-backend-dev.bridgelabz.com/redirects',
+    updateRedirect: 'http://fundoopush-backend-dev.bridgelabz.com/redirects',
+    backendUrl: 'http://fundoopush-backend-dev.bridgelabz.com/',
 
     success: 200,
     invalidUser: 400,
@@ -80,9 +83,9 @@ export const storyPanel = [{
     token: 4
 }]
 
-export function paneltemplete(){
-    status='';
-    message='';
-    token='';
+export function paneltemplete() {
+    status = '';
+    message = '';
+    token = '';
 
 }

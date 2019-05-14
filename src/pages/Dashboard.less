@@ -13,6 +13,10 @@
     padding: 1em;
   display: flex;
   flex-direction: column;
+  margin-top: 80px;
+    z-index: 5;
+    overflow: auto;
+        height: 100%;
   
   
 
@@ -29,31 +33,36 @@
     flex-Direction: column;
     right: 0;
     bottom: 0;
-    position: fixed
+    position: fixed;
+    margin-right:25px
 }
 .toogleButton{
     background-color: white;
     width: 283px;
     height: 36px;
     border-radius: 10px;
+    display: flex
 }
 
 #articleButton{
     width:141px;
-    
+    font-weight: bold;
       border-radius: 10px;
-
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    cursor: pointer;
 }
 #storyButton{
-    width:141px;
-     border-radius: 10px;
+  #articleButton();
+  cursor: pointer;
 }
 
 #clickedToggle{
-      width:141px;
-    background-color: @yellow;
-    color: white;
-    border-radius: 10px;
+     #articleButton();
+     background-color: @yellow;
+     color: white
 
 }
 .displayCards{
@@ -76,5 +85,6 @@
 display:flex;
 flex-direction:row;
 flex-wrap: wrap;
-      
+      width: 100%;
+    justify-content: space-evenly;
 }
