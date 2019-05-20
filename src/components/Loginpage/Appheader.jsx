@@ -12,7 +12,7 @@ class Appheader extends Component {
         return (
             <div className={style.appHeader}>
 
-                <Row>
+                <Row className={style.row}>
                     <Col xs={2} className={style.firstColumn}>
                         <div>
                             <img className={style.mainLogo} src={require('../../assets/Group 441.png')} />
@@ -54,6 +54,7 @@ class Appheader extends Component {
                             </div>
 
                             <Avatar />
+
                         </div>
 
                     </Col>

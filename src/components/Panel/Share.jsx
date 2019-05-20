@@ -30,6 +30,11 @@ const theme = createMuiTheme({
 
                 backgroundColor: ' rgba(0, 0, 0, 0.1)'
             }
+        },
+        MuiPaper: {
+            elevation24: {
+                boxShadow: "none"
+            }
         }
     }
 })
@@ -81,7 +86,10 @@ class Sharecard extends Component {
                     open={this.props.open}>
                     <div>
                         <div className={style.sharemainDiv}>
-                            <img src={imageUrl} className={style.mainImage} />
+                            <div>
+                                <img src={imageUrl} className={style.mainImage} />
+                            </div>
+
                             <div>
                                 <img onClick={() => this.handleCancel()} className={style.cancelButton} src={require('../../assets/cancel.svg')} />
                             </div>

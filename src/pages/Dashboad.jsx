@@ -21,6 +21,8 @@ import { withRouter } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackBar from 'react-material-snackbar';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import store from '../store'
 
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -49,7 +51,7 @@ const breakpointColumnsObj = {
     500: 1
 };
 function mapStateToProps(state) {
-    console.log('article in dash--- update-==--=' + JSON.stringify(state.dashboard.updateResponse));
+    console.log('article in dash--- update-==--=' + JSON.stringify(state.dashboard.cards));
 
     return {
         toggleDisplay: state.dashboard.article,
@@ -70,10 +72,12 @@ class Dashboard extends Component {
             one: [],
             two: [],
             three: [],
-            data: this.props.data,
+
             snackbar: false,
             width: "",
             height: "",
+            load: false,
+            newArray: []
 
         }
 
@@ -84,15 +88,27 @@ class Dashboard extends Component {
 
     }
 
-    componentDidMount() {
-        //  this.props.onGetcard()
-        // if (this.props.loading) { return (LoadingMessage()) }
-        // else {
+    componentWillMount() {
+        store.dispatch({ type: GET_CARDS })
+    }
+
+    async componentDidMount() {
+
+        this.props.data
+
+        this.setState({ load: true, newArray: this.props.data })
+
+
+
+        console.log("new cards after setstate------" + this.state.newArray)
         console.log("ne height-----" + this.state.height)
         const arrayResult = []
-        this.props.data.map((note) => {
+        this.state.newArray.map((note) => {
             arrayResult.push(note.resultData)
         });
+
+
+
 
         console.log("new created array-----" + JSON.stringify(arrayResult));
         // console.log("arraray on dashboard***--" + JSON.stringify(this.props.cards))
@@ -135,8 +151,9 @@ class Dashboard extends Component {
         console.log("length of 1" + one.length);
         console.log("length of 2" + two.length);
         console.log("length of 3" + three.length);
-
     }
+
+
     updateDimensions() {
 
         var w = window,
@@ -197,81 +214,88 @@ class Dashboard extends Component {
         return (
             <Container fluid={true} className={style.dashboardDiv}>
                 <Appheader />
-                {
-                    this.props.loading ?
-                        (
-                            <LinearProgress></LinearProgress>
-                        ) :
-                        (
-                            <div></div>
-                        )
-                }
+
+
+
+
                 <div className={style.cardView}>
-                    <div className={style.toggleDiv}>
-                        <div className={style.toogleButton}>
-                            <div onClick={() => this.articleSelect()} variant="contained" id={display} > ARTICLE</div>
-                            <div onClick={() => this.storySelect()} variant="contained" id={story} > STORY</div>
-                        </div>
-                    </div>
-                    <div className={style.displayCards}>
-                        {
-                            !this.props.toggleDisplay ?
-                                (
-
-                                    <div
-                                        className={style.artcileDiv}>
-                                        <Storypanel />
-                                        <Storypanel />
-                                        <Storypanel />
-                                        <Storypanel />
-                                        <Storypanel />
-                                        <Storypanel />
-                                        <Storypanel />
-                                        <Storypanel />
-                                        <Storypanel />
-                                        <Storypanel /> <Storypanel />
+                    {
+                        this.props.loading ?
+                            (
+                                <div>
+                                    <LinearProgress />
+                                </div>
+                            ) :
+                            (
+                                <div>
+                                    <div className={style.toggleDiv}>
+                                        <div className={style.toogleButton}>
+                                            <div onClick={() => this.articleSelect()} variant="contained" id={display} > ARTICLE</div>
+                                            <div onClick={() => this.storySelect()} variant="contained" id={story} > STORY</div>
+                                        </div>
                                     </div>
 
-                                ) : (
+                                    <div className={style.displayCards}>
+                                        {
+                                            !this.props.toggleDisplay ?
+                                                (
 
-                                    <div className={style.cardsDiv}>
-                                        <div>
-                                            {arraydiv1}
+                                                    <div
+                                                        className={style.artcileDiv}>
+                                                        <Storypanel />
+                                                        <Storypanel />
+                                                        <Storypanel />
+                                                        <Storypanel />
+                                                        <Storypanel />
+                                                        <Storypanel />
+                                                        <Storypanel />
+                                                        <Storypanel />
+                                                        <Storypanel />
+                                                        <Storypanel /> <Storypanel />
+                                                    </div>
 
-                                        </div>
+                                                ) : (
 
-                                        <div>
-                                            {arraydiv2}
-                                        </div>
-                                        <div>
-                                            {arraydiv3}
-                                        </div>
+                                                    <div className={style.cardsDiv}>
+                                                        <div>
+                                                            {arraydiv1}
+
+                                                        </div>
+
+                                                        <div>
+                                                            {arraydiv2}
+                                                        </div>
+                                                        <div>
+                                                            {arraydiv3}
+                                                        </div>
 
 
+                                                    </div>
+                                                )
+                                        }
                                     </div>
-                                )
-                        }
-                    </div>
-                    <Addredirectcard />
-                    <Imageselect />
+                                    <Addredirectcard />
+                                    <Imageselect />
 
-                    <div className={style.addButton}>
-                        <img onClick={() => this.props.openRedirectdailog()} src={require('../assets/add.png')} />
-                    </div>
+                                    <div className={style.addButton}>
+                                        <img onClick={() => this.props.openRedirectdailog()} src={require('../assets/add.png')} />
+                                    </div>
+
+                                </div>
+                            )}
+                    <Snackbar
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'center',
+                        }}
+                        open={this.props.linkCopied}
+                        autoHideDuration={6000}
+                        onClose={this.handleClose}
+                        message="Copied to clipboard"
+
+                    />
 
                 </div>
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center',
-                    }}
-                    open={this.props.linkCopied}
-                    autoHideDuration={6000}
-                    onClose={this.handleClose}
-                    message="Copied to clipboard"
-
-                />
-
 
 
             </Container>

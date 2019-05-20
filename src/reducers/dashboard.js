@@ -12,15 +12,18 @@ import {
     EDIT_TOOGLE,
     RETRIVE_CARD_RESPONSE,
     RETRIVE_CARD_ASYNC,
-    UPDATEREDIRECT_RESPONSE
+    UPDATEREDIRECT_RESPONSE,
+    CLOSE_LOADING
 } from "../constants/actionTypes";
 
 
 export default (state = {
     openDailog: false,
     article: true,
-    cards: [], loading: false,
-    note: [], fromEdit: false,
+    cards: null,
+    loading: false,
+    note: [],
+    fromEdit: false,
     linkCopied: false,
     retrive: false,
     udpateRespone: []
@@ -57,7 +60,7 @@ export default (state = {
             return {
                 ...state,
                 cards: action.payload,
-                loading: false,
+
             }
         case GETCARD_ASYNC:
             return {
@@ -99,6 +102,12 @@ export default (state = {
             return {
                 ...state,
                 updateResponse: action.payload
+            }
+        case CLOSE_LOADING:
+            return {
+                ...state,
+                loading: false,
+
             }
 
         default:

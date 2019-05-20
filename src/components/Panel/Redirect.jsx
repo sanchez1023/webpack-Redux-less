@@ -17,7 +17,13 @@ const theme = createMuiTheme({
 
                 backgroundColor: ' rgba(0, 0, 0, 0.1)'
             }
+        },
+        MuiPaper: {
+            elevation24: {
+                boxShadow: "none"
+            }
         }
+
     }
 
 

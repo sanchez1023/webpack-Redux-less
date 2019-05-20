@@ -43,7 +43,7 @@ const auth = {
 
         return axios.get(databaseConfig.getcards, { headers: headers })
             .then(response => {
-                console.log("response in ysdde--" + JSON.stringify(response.data))
+                console.log("response in retrive card--" + JSON.stringify(response.data))
                 return response.data
             })
 

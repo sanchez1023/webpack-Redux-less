@@ -1,10 +1,10 @@
-import { delay, request } from "redux-saga";
-import { put, call, all } from "redux-saga/effects";
+import { request } from "redux-saga";
+import { put, call, all, delay } from "redux-saga/effects";
 import { takeEvery } from 'redux-saga/effects';
 import { databaseConfig } from "../config";
 import axios from 'axios';
 import { paneltemplete } from "../config"
-import { LOGIN_ASYNC, LOGIN_RESPONSE, LOGIN_USER, DATABASE_ERROR, GETCARD_RESPONSE, GETCARD_ASYNC, ADDREDIRECT_ASYNC, ADDREDIRECT_RESPONSE, GET_CARDS, UPDATEREDIRECT_ASYNC, UPDATEREDIRECT_RESPONSE, RETRIVE_CARD_ASYNC, RETRIVE_CARD, RETRIVE_CARD_RESPONSE } from "../constants/actionTypes";
+import { LOGIN_ASYNC, LOGIN_RESPONSE, LOGIN_USER, DATABASE_ERROR, GETCARD_RESPONSE, GETCARD_ASYNC, ADDREDIRECT_ASYNC, ADDREDIRECT_RESPONSE, GET_CARDS, UPDATEREDIRECT_ASYNC, UPDATEREDIRECT_RESPONSE, RETRIVE_CARD_ASYNC, RETRIVE_CARD, RETRIVE_CARD_RESPONSE, CLOSE_LOADING } from "../constants/actionTypes";
 import auth from "../Usercontroller";
 import { browserHistory } from "../store";
 import { withRouter } from 'react-router-dom'
@@ -17,10 +17,14 @@ export function* getCardAsync(action) {
         yield put({ type: GETCARD_ASYNC });
 
         const response = yield call(retriveCard => auth.retriveCard())
-        console.log('respone in saga' + JSON.stringify(response));
+
 
 
         yield put({ type: GETCARD_RESPONSE, payload: response.data })
+        console.log('respone in saga' + JSON.stringify(response));
+        yield delay(8000)
+        yield put({ type: CLOSE_LOADING })
+
 
     }
     catch (error) {
@@ -48,6 +52,8 @@ export function* loginAsync(action) {
 
 
         yield put({ type: LOGIN_RESPONSE, payload: response.data })
+
+        
 
 
     }

@@ -124,7 +124,7 @@ class Login extends Component {
         super();
         this.changeEmail = event => this.validateEmail(event.target.value);
         this.changePassword = event => this.validatePassword(event.target.value);
-        this.handleClose= ()=>this.props.closeError();
+        this.handleClose = () => this.props.closeError();
 
 
         this.onLogin = (email, password) => ev => {
@@ -178,7 +178,7 @@ class Login extends Component {
 
         }
     }
-    
+
     validateEmail(email) {
         var flag = false;
 
@@ -244,7 +244,7 @@ class Login extends Component {
             this.props.success.data ?
                 (<Redirect
                     to={{
-                        pathname: "/loading",
+                        pathname: "/home",
                         // state: { from: props.location }
                     }}
                 />
@@ -370,7 +370,7 @@ class Login extends Component {
                                         message={this.props.error.message}
 
                                     />
-                                   
+
 
                                 </form>
                             </Card>
